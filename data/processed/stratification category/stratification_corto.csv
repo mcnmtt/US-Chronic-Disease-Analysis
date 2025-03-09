@@ -1,0 +1,31 @@
+QuestionID;Stratification_Category;Stratification;Num_Entry
+CAN10_1;Overall;Overall;156
+CAN10_2;Overall;Overall;156
+CAN11_1;Overall;Overall;156
+CAN11_2;Overall;Overall;156
+CAN1_0;Overall;Overall;330
+CAN1_0;Race/Ethnicity;Black, non-Hispanic;216
+CAN1_0;Race/Ethnicity;Hispanic;216
+CAN1_0;Race/Ethnicity;Multiracial, non-Hispanic;216
+CAN1_0;Race/Ethnicity;Other, non-Hispanic;216
+CAN1_0;Race/Ethnicity;White, non-Hispanic;216
+CAN2_1;Overall;Overall;330
+CAN2_1;Race/Ethnicity;Black, non-Hispanic;216
+CAN2_1;Race/Ethnicity;Hispanic;216
+CAN2_1;Race/Ethnicity;Multiracial, non-Hispanic;216
+CAN2_1;Race/Ethnicity;Other, non-Hispanic;216
+CAN2_1;Race/Ethnicity;White, non-Hispanic;216
+CAN2_2;Overall;Overall;165
+CAN2_2;Race/Ethnicity;Black, non-Hispanic;108
+CAN2_2;Race/Ethnicity;Hispanic;108
+CAN2_2;Race/Ethnicity;Multiracial, non-Hispanic;108
+CAN2_2;Race/Ethnicity;Other, non-Hispanic;108
+CAN2_2;Race/Ethnicity;White, non-Hispanic;108
+CAN3_0;Gender;Female;110
+CAN3_0;Gender;Male;110
+CAN3_0;Overall;Overall;220
+CAN3_0;Race/Ethnicity;Black, non-Hispanic;108
+CAN3_0;Race/Ethnicity;Hispanic;108
+CAN3_0;Race/Ethnicity;Multiracial, non-Hispanic;108
+CAN3_0;Race/Ethnicity;Other, non-Hispanic;108
+CAN3_0;Race/Ethnicity;White, non-Hispanic;108

@@ -1,0 +1,970 @@
+"QuestionID","Stratification_Category","Stratification","Num_Entry"
+"ALC10_0","Overall","Overall",55
+"ALC1_1","Overall","Overall",51
+"ALC1_2","Overall","Overall",55
+"ALC2_1","Overall","Overall",55
+"ALC2_2","Gender","Female",220
+"ALC2_2","Gender","Male",220
+"ALC2_2","Overall","Overall",330
+"ALC2_2","Race/Ethnicity","Black, non-Hispanic",216
+"ALC2_2","Race/Ethnicity","Hispanic",216
+"ALC2_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ALC2_2","Race/Ethnicity","Other, non-Hispanic",216
+"ALC2_2","Race/Ethnicity","White, non-Hispanic",216
+"ALC2_3","Overall","Overall",165
+"ALC2_3","Race/Ethnicity","Black, non-Hispanic",108
+"ALC2_3","Race/Ethnicity","Hispanic",108
+"ALC2_3","Race/Ethnicity","Multiracial, non-Hispanic",108
+"ALC2_3","Race/Ethnicity","Other, non-Hispanic",108
+"ALC2_3","Race/Ethnicity","White, non-Hispanic",108
+"ALC3_0","Gender","Female",220
+"ALC3_0","Gender","Male",220
+"ALC3_0","Overall","Overall",330
+"ALC3_0","Race/Ethnicity","Black, non-Hispanic",216
+"ALC3_0","Race/Ethnicity","Hispanic",216
+"ALC3_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ALC3_0","Race/Ethnicity","Other, non-Hispanic",216
+"ALC3_0","Race/Ethnicity","White, non-Hispanic",216
+"ALC4_0","Gender","Female",220
+"ALC4_0","Gender","Male",220
+"ALC4_0","Overall","Overall",330
+"ALC4_0","Race/Ethnicity","Black, non-Hispanic",216
+"ALC4_0","Race/Ethnicity","Hispanic",216
+"ALC4_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ALC4_0","Race/Ethnicity","Other, non-Hispanic",216
+"ALC4_0","Race/Ethnicity","White, non-Hispanic",216
+"ALC5_1","Gender","Female",220
+"ALC5_1","Gender","Male",220
+"ALC5_1","Overall","Overall",330
+"ALC5_1","Race/Ethnicity","Black, non-Hispanic",216
+"ALC5_1","Race/Ethnicity","Hispanic",216
+"ALC5_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ALC5_1","Race/Ethnicity","Other, non-Hispanic",216
+"ALC5_1","Race/Ethnicity","White, non-Hispanic",216
+"ALC5_2","Overall","Overall",165
+"ALC5_2","Race/Ethnicity","Black, non-Hispanic",108
+"ALC5_2","Race/Ethnicity","Hispanic",108
+"ALC5_2","Race/Ethnicity","Multiracial, non-Hispanic",108
+"ALC5_2","Race/Ethnicity","Other, non-Hispanic",108
+"ALC5_2","Race/Ethnicity","White, non-Hispanic",108
+"ALC6_0","Gender","Female",765
+"ALC6_0","Gender","Male",765
+"ALC6_0","Overall","Overall",780
+"ALC6_0","Race/Ethnicity","American Indian or Alaska Native",765
+"ALC6_0","Race/Ethnicity","Asian or Pacific Islander",765
+"ALC6_0","Race/Ethnicity","Black, non-Hispanic",765
+"ALC6_0","Race/Ethnicity","Hispanic",765
+"ALC6_0","Race/Ethnicity","White, non-Hispanic",765
+"ALC7_0","Overall","Overall",55
+"ALC8_0_1","Overall","Overall",55
+"ALC8_0_2","Overall","Overall",55
+"ALC8_0_3","Overall","Overall",55
+"ALC9_0","Overall","Overall",55
+"ART1_1","Gender","Female",220
+"ART1_1","Gender","Male",220
+"ART1_1","Overall","Overall",275
+"ART1_1","Race/Ethnicity","Black, non-Hispanic",216
+"ART1_1","Race/Ethnicity","Hispanic",216
+"ART1_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ART1_1","Race/Ethnicity","Other, non-Hispanic",216
+"ART1_1","Race/Ethnicity","White, non-Hispanic",216
+"ART1_2","Gender","Female",220
+"ART1_2","Gender","Male",220
+"ART1_2","Overall","Overall",275
+"ART1_2","Race/Ethnicity","Black, non-Hispanic",216
+"ART1_2","Race/Ethnicity","Hispanic",216
+"ART1_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ART1_2","Race/Ethnicity","Other, non-Hispanic",216
+"ART1_2","Race/Ethnicity","White, non-Hispanic",216
+"ART1_3","Gender","Female",220
+"ART1_3","Gender","Male",220
+"ART1_3","Overall","Overall",275
+"ART1_3","Race/Ethnicity","Black, non-Hispanic",216
+"ART1_3","Race/Ethnicity","Hispanic",216
+"ART1_3","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ART1_3","Race/Ethnicity","Other, non-Hispanic",216
+"ART1_3","Race/Ethnicity","White, non-Hispanic",216
+"ART1_4","Gender","Female",220
+"ART1_4","Gender","Male",220
+"ART1_4","Overall","Overall",275
+"ART1_4","Race/Ethnicity","Black, non-Hispanic",216
+"ART1_4","Race/Ethnicity","Hispanic",216
+"ART1_4","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ART1_4","Race/Ethnicity","Other, non-Hispanic",216
+"ART1_4","Race/Ethnicity","White, non-Hispanic",216
+"ART2_0","Gender","Female",110
+"ART2_0","Gender","Male",110
+"ART2_0","Overall","Overall",165
+"ART2_0","Race/Ethnicity","Black, non-Hispanic",108
+"ART2_0","Race/Ethnicity","Hispanic",108
+"ART2_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"ART2_0","Race/Ethnicity","Other, non-Hispanic",108
+"ART2_0","Race/Ethnicity","White, non-Hispanic",108
+"ART3_0","Gender","Female",220
+"ART3_0","Gender","Male",220
+"ART3_0","Overall","Overall",275
+"ART3_0","Race/Ethnicity","Black, non-Hispanic",216
+"ART3_0","Race/Ethnicity","Hispanic",216
+"ART3_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ART3_0","Race/Ethnicity","Other, non-Hispanic",216
+"ART3_0","Race/Ethnicity","White, non-Hispanic",216
+"ART4_0","Gender","Female",220
+"ART4_0","Gender","Male",220
+"ART4_0","Overall","Overall",275
+"ART4_0","Race/Ethnicity","Black, non-Hispanic",216
+"ART4_0","Race/Ethnicity","Hispanic",216
+"ART4_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"ART4_0","Race/Ethnicity","Other, non-Hispanic",216
+"ART4_0","Race/Ethnicity","White, non-Hispanic",216
+"ART5_0","Gender","Female",110
+"ART5_0","Gender","Male",110
+"ART5_0","Overall","Overall",165
+"ART5_0","Race/Ethnicity","Black, non-Hispanic",108
+"ART5_0","Race/Ethnicity","Hispanic",108
+"ART5_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"ART5_0","Race/Ethnicity","Other, non-Hispanic",108
+"ART5_0","Race/Ethnicity","White, non-Hispanic",108
+"AST1_1","Gender","Female",220
+"AST1_1","Gender","Male",220
+"AST1_1","Overall","Overall",275
+"AST1_1","Race/Ethnicity","Black, non-Hispanic",216
+"AST1_1","Race/Ethnicity","Hispanic",216
+"AST1_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"AST1_1","Race/Ethnicity","Other, non-Hispanic",216
+"AST1_1","Race/Ethnicity","White, non-Hispanic",216
+"AST1_2","Overall","Overall",165
+"AST1_2","Race/Ethnicity","Black, non-Hispanic",108
+"AST1_2","Race/Ethnicity","Hispanic",108
+"AST1_2","Race/Ethnicity","Multiracial, non-Hispanic",108
+"AST1_2","Race/Ethnicity","Other, non-Hispanic",108
+"AST1_2","Race/Ethnicity","White, non-Hispanic",108
+"AST2_1","Gender","Female",309
+"AST2_1","Gender","Male",309
+"AST2_1","Overall","Overall",309
+"AST2_1","Race/Ethnicity","American Indian or Alaska Native",36
+"AST2_1","Race/Ethnicity","Asian or Pacific Islander",36
+"AST2_1","Race/Ethnicity","Black, non-Hispanic",36
+"AST2_1","Race/Ethnicity","Hispanic",36
+"AST2_1","Race/Ethnicity","White, non-Hispanic",36
+"AST3_1","Gender","Female",306
+"AST3_1","Gender","Male",305
+"AST3_1","Overall","Overall",306
+"AST3_1","Race/Ethnicity","American Indian or Alaska Native",60
+"AST3_1","Race/Ethnicity","Asian or Pacific Islander",63
+"AST3_1","Race/Ethnicity","Black, non-Hispanic",63
+"AST3_1","Race/Ethnicity","Hispanic",63
+"AST3_1","Race/Ethnicity","White, non-Hispanic",63
+"AST4_1","Gender","Female",765
+"AST4_1","Gender","Male",765
+"AST4_1","Overall","Overall",780
+"AST4_1","Race/Ethnicity","American Indian or Alaska Native",765
+"AST4_1","Race/Ethnicity","Asian or Pacific Islander",765
+"AST4_1","Race/Ethnicity","Black, non-Hispanic",765
+"AST4_1","Race/Ethnicity","Hispanic",765
+"AST4_1","Race/Ethnicity","White, non-Hispanic",765
+"AST5_1","Gender","Female",220
+"AST5_1","Gender","Male",220
+"AST5_1","Overall","Overall",330
+"AST5_1","Race/Ethnicity","Black, non-Hispanic",216
+"AST5_1","Race/Ethnicity","Hispanic",216
+"AST5_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"AST5_1","Race/Ethnicity","Other, non-Hispanic",216
+"AST5_1","Race/Ethnicity","White, non-Hispanic",216
+"AST5_2","Gender","Female",220
+"AST5_2","Gender","Male",220
+"AST5_2","Overall","Overall",330
+"AST5_2","Race/Ethnicity","Black, non-Hispanic",216
+"AST5_2","Race/Ethnicity","Hispanic",216
+"AST5_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"AST5_2","Race/Ethnicity","Other, non-Hispanic",216
+"AST5_2","Race/Ethnicity","White, non-Hispanic",216
+"AST6_1","Gender","Female",220
+"AST6_1","Gender","Male",220
+"AST6_1","Overall","Overall",330
+"AST6_1","Race/Ethnicity","Black, non-Hispanic",216
+"AST6_1","Race/Ethnicity","Hispanic",216
+"AST6_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"AST6_1","Race/Ethnicity","Other, non-Hispanic",216
+"AST6_1","Race/Ethnicity","White, non-Hispanic",216
+"AST6_2","Gender","Female",220
+"AST6_2","Gender","Male",220
+"AST6_2","Overall","Overall",330
+"AST6_2","Race/Ethnicity","Black, non-Hispanic",216
+"AST6_2","Race/Ethnicity","Hispanic",216
+"AST6_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"AST6_2","Race/Ethnicity","Other, non-Hispanic",216
+"AST6_2","Race/Ethnicity","White, non-Hispanic",216
+"CAN10_1","Overall","Overall",156
+"CAN10_2","Overall","Overall",156
+"CAN11_1","Overall","Overall",156
+"CAN11_2","Overall","Overall",156
+"CAN1_0","Overall","Overall",330
+"CAN1_0","Race/Ethnicity","Black, non-Hispanic",216
+"CAN1_0","Race/Ethnicity","Hispanic",216
+"CAN1_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"CAN1_0","Race/Ethnicity","Other, non-Hispanic",216
+"CAN1_0","Race/Ethnicity","White, non-Hispanic",216
+"CAN2_1","Overall","Overall",330
+"CAN2_1","Race/Ethnicity","Black, non-Hispanic",216
+"CAN2_1","Race/Ethnicity","Hispanic",216
+"CAN2_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"CAN2_1","Race/Ethnicity","Other, non-Hispanic",216
+"CAN2_1","Race/Ethnicity","White, non-Hispanic",216
+"CAN2_2","Overall","Overall",165
+"CAN2_2","Race/Ethnicity","Black, non-Hispanic",108
+"CAN2_2","Race/Ethnicity","Hispanic",108
+"CAN2_2","Race/Ethnicity","Multiracial, non-Hispanic",108
+"CAN2_2","Race/Ethnicity","Other, non-Hispanic",108
+"CAN2_2","Race/Ethnicity","White, non-Hispanic",108
+"CAN3_0","Gender","Female",110
+"CAN3_0","Gender","Male",110
+"CAN3_0","Overall","Overall",220
+"CAN3_0","Race/Ethnicity","Black, non-Hispanic",108
+"CAN3_0","Race/Ethnicity","Hispanic",108
+"CAN3_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"CAN3_0","Race/Ethnicity","Other, non-Hispanic",108
+"CAN3_0","Race/Ethnicity","White, non-Hispanic",108
+"CAN4_1","Overall","Overall",156
+"CAN4_2","Overall","Overall",156
+"CAN5_1","Overall","Overall",156
+"CAN5_2","Overall","Overall",156
+"CAN6_1","Overall","Overall",156
+"CAN6_2","Overall","Overall",156
+"CAN7_1","Overall","Overall",156
+"CAN7_2","Overall","Overall",156
+"CAN8_1","Overall","Overall",156
+"CAN8_2","Overall","Overall",156
+"CAN9_1","Overall","Overall",156
+"CAN9_2","Overall","Overall",156
+"CKD1_0","Gender","Female",765
+"CKD1_0","Gender","Male",765
+"CKD1_0","Overall","Overall",780
+"CKD1_0","Race/Ethnicity","American Indian or Alaska Native",765
+"CKD1_0","Race/Ethnicity","Asian or Pacific Islander",765
+"CKD1_0","Race/Ethnicity","Black, non-Hispanic",765
+"CKD1_0","Race/Ethnicity","Hispanic",765
+"CKD1_0","Race/Ethnicity","White, non-Hispanic",765
+"CKD2_1","Overall","Overall",104
+"CKD2_2","Overall","Overall",104
+"CKD3_0","Gender","Female",220
+"CKD3_0","Gender","Male",220
+"CKD3_0","Overall","Overall",330
+"CKD3_0","Race/Ethnicity","Black, non-Hispanic",216
+"CKD3_0","Race/Ethnicity","Hispanic",216
+"CKD3_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"CKD3_0","Race/Ethnicity","Other, non-Hispanic",216
+"CKD3_0","Race/Ethnicity","White, non-Hispanic",216
+"COPD1_1","Gender","Female",765
+"COPD1_1","Gender","Male",765
+"COPD1_1","Overall","Overall",780
+"COPD1_1","Race/Ethnicity","American Indian or Alaska Native",765
+"COPD1_1","Race/Ethnicity","Asian or Pacific Islander",765
+"COPD1_1","Race/Ethnicity","Black, non-Hispanic",765
+"COPD1_1","Race/Ethnicity","Hispanic",765
+"COPD1_1","Race/Ethnicity","White, non-Hispanic",765
+"COPD1_2","Gender","Female",765
+"COPD1_2","Gender","Male",765
+"COPD1_2","Overall","Overall",780
+"COPD1_2","Race/Ethnicity","American Indian or Alaska Native",765
+"COPD1_2","Race/Ethnicity","Asian or Pacific Islander",765
+"COPD1_2","Race/Ethnicity","Black, non-Hispanic",765
+"COPD1_2","Race/Ethnicity","Hispanic",765
+"COPD1_2","Race/Ethnicity","White, non-Hispanic",765
+"COPD2_0","Gender","Female",220
+"COPD2_0","Gender","Male",220
+"COPD2_0","Overall","Overall",330
+"COPD2_0","Race/Ethnicity","Black, non-Hispanic",216
+"COPD2_0","Race/Ethnicity","Hispanic",216
+"COPD2_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"COPD2_0","Race/Ethnicity","Other, non-Hispanic",216
+"COPD2_0","Race/Ethnicity","White, non-Hispanic",216
+"COPD2_0_1","Gender","Female",220
+"COPD2_0_1","Gender","Male",220
+"COPD2_0_1","Overall","Overall",330
+"COPD2_0_1","Race/Ethnicity","Black, non-Hispanic",216
+"COPD2_0_1","Race/Ethnicity","Hispanic",216
+"COPD2_0_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"COPD2_0_1","Race/Ethnicity","Other, non-Hispanic",216
+"COPD2_0_1","Race/Ethnicity","White, non-Hispanic",216
+"COPD3_0","Gender","Female",220
+"COPD3_0","Gender","Male",220
+"COPD3_0","Overall","Overall",330
+"COPD3_0","Race/Ethnicity","Black, non-Hispanic",216
+"COPD3_0","Race/Ethnicity","Hispanic",216
+"COPD3_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"COPD3_0","Race/Ethnicity","Other, non-Hispanic",216
+"COPD3_0","Race/Ethnicity","White, non-Hispanic",216
+"COPD3_0_1","Gender","Female",220
+"COPD3_0_1","Gender","Male",220
+"COPD3_0_1","Overall","Overall",330
+"COPD3_0_1","Race/Ethnicity","Black, non-Hispanic",216
+"COPD3_0_1","Race/Ethnicity","Hispanic",216
+"COPD3_0_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"COPD3_0_1","Race/Ethnicity","Other, non-Hispanic",216
+"COPD3_0_1","Race/Ethnicity","White, non-Hispanic",216
+"COPD4_0","Gender","Female",220
+"COPD4_0","Gender","Male",220
+"COPD4_0","Overall","Overall",330
+"COPD4_0","Race/Ethnicity","Black, non-Hispanic",216
+"COPD4_0","Race/Ethnicity","Hispanic",216
+"COPD4_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"COPD4_0","Race/Ethnicity","Other, non-Hispanic",216
+"COPD4_0","Race/Ethnicity","White, non-Hispanic",216
+"COPD4_0_1","Gender","Female",220
+"COPD4_0_1","Gender","Male",220
+"COPD4_0_1","Overall","Overall",330
+"COPD4_0_1","Race/Ethnicity","Black, non-Hispanic",216
+"COPD4_0_1","Race/Ethnicity","Hispanic",216
+"COPD4_0_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"COPD4_0_1","Race/Ethnicity","Other, non-Hispanic",216
+"COPD4_0_1","Race/Ethnicity","White, non-Hispanic",216
+"COPD5_1","Gender","Female",309
+"COPD5_1","Gender","Male",309
+"COPD5_1","Overall","Overall",309
+"COPD5_1","Race/Ethnicity","American Indian or Alaska Native",63
+"COPD5_1","Race/Ethnicity","Asian or Pacific Islander",63
+"COPD5_1","Race/Ethnicity","Black, non-Hispanic",63
+"COPD5_1","Race/Ethnicity","Hispanic",63
+"COPD5_1","Race/Ethnicity","White, non-Hispanic",63
+"COPD5_2","Gender","Female",309
+"COPD5_2","Gender","Male",309
+"COPD5_2","Overall","Overall",309
+"COPD5_2","Race/Ethnicity","American Indian or Alaska Native",63
+"COPD5_2","Race/Ethnicity","Asian or Pacific Islander",63
+"COPD5_2","Race/Ethnicity","Black, non-Hispanic",63
+"COPD5_2","Race/Ethnicity","Hispanic",63
+"COPD5_2","Race/Ethnicity","White, non-Hispanic",63
+"COPD5_3","Gender","Female",156
+"COPD5_3","Gender","Male",156
+"COPD5_3","Overall","Overall",156
+"COPD5_4","Gender","Female",156
+"COPD5_4","Gender","Male",156
+"COPD5_4","Overall","Overall",156
+"COPD6_1","Gender","Female",309
+"COPD6_1","Gender","Male",309
+"COPD6_1","Overall","Overall",309
+"COPD6_1","Race/Ethnicity","American Indian or Alaska Native",36
+"COPD6_1","Race/Ethnicity","Asian or Pacific Islander",36
+"COPD6_1","Race/Ethnicity","Black, non-Hispanic",36
+"COPD6_1","Race/Ethnicity","Hispanic",36
+"COPD6_1","Race/Ethnicity","White, non-Hispanic",36
+"COPD6_2","Gender","Female",309
+"COPD6_2","Gender","Male",309
+"COPD6_2","Overall","Overall",309
+"COPD6_2","Race/Ethnicity","American Indian or Alaska Native",36
+"COPD6_2","Race/Ethnicity","Asian or Pacific Islander",36
+"COPD6_2","Race/Ethnicity","Black, non-Hispanic",36
+"COPD6_2","Race/Ethnicity","Hispanic",36
+"COPD6_2","Race/Ethnicity","White, non-Hispanic",36
+"COPD7_0","Gender","Female",220
+"COPD7_0","Gender","Male",220
+"COPD7_0","Overall","Overall",330
+"COPD7_0","Race/Ethnicity","Black, non-Hispanic",216
+"COPD7_0","Race/Ethnicity","Hispanic",216
+"COPD7_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"COPD7_0","Race/Ethnicity","Other, non-Hispanic",216
+"COPD7_0","Race/Ethnicity","White, non-Hispanic",216
+"COPD8_0","Gender","Female",220
+"COPD8_0","Gender","Male",220
+"COPD8_0","Overall","Overall",330
+"COPD8_0","Race/Ethnicity","Black, non-Hispanic",216
+"COPD8_0","Race/Ethnicity","Hispanic",216
+"COPD8_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"COPD8_0","Race/Ethnicity","Other, non-Hispanic",216
+"COPD8_0","Race/Ethnicity","White, non-Hispanic",216
+"CVD10_1","Gender","Female",220
+"CVD10_1","Gender","Male",220
+"CVD10_1","Overall","Overall",330
+"CVD10_1","Race/Ethnicity","Black, non-Hispanic",216
+"CVD10_1","Race/Ethnicity","Hispanic",216
+"CVD10_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"CVD10_1","Race/Ethnicity","Other, non-Hispanic",216
+"CVD10_1","Race/Ethnicity","White, non-Hispanic",216
+"CVD10_2","Gender","Female",220
+"CVD10_2","Gender","Male",220
+"CVD10_2","Overall","Overall",330
+"CVD10_2","Race/Ethnicity","Black, non-Hispanic",216
+"CVD10_2","Race/Ethnicity","Hispanic",216
+"CVD10_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"CVD10_2","Race/Ethnicity","Other, non-Hispanic",216
+"CVD10_2","Race/Ethnicity","White, non-Hispanic",216
+"CVD1_1","Gender","Female",765
+"CVD1_1","Gender","Male",765
+"CVD1_1","Overall","Overall",780
+"CVD1_1","Race/Ethnicity","American Indian or Alaska Native",765
+"CVD1_1","Race/Ethnicity","Asian or Pacific Islander",765
+"CVD1_1","Race/Ethnicity","Black, non-Hispanic",765
+"CVD1_1","Race/Ethnicity","Hispanic",765
+"CVD1_1","Race/Ethnicity","White, non-Hispanic",765
+"CVD1_2","Gender","Female",765
+"CVD1_2","Gender","Male",765
+"CVD1_2","Overall","Overall",780
+"CVD1_2","Race/Ethnicity","American Indian or Alaska Native",765
+"CVD1_2","Race/Ethnicity","Asian or Pacific Islander",765
+"CVD1_2","Race/Ethnicity","Black, non-Hispanic",765
+"CVD1_2","Race/Ethnicity","Hispanic",765
+"CVD1_2","Race/Ethnicity","White, non-Hispanic",765
+"CVD1_3","Gender","Female",765
+"CVD1_3","Gender","Male",765
+"CVD1_3","Overall","Overall",780
+"CVD1_3","Race/Ethnicity","American Indian or Alaska Native",765
+"CVD1_3","Race/Ethnicity","Asian or Pacific Islander",765
+"CVD1_3","Race/Ethnicity","Black, non-Hispanic",765
+"CVD1_3","Race/Ethnicity","Hispanic",765
+"CVD1_3","Race/Ethnicity","White, non-Hispanic",765
+"CVD1_4","Gender","Female",765
+"CVD1_4","Gender","Male",765
+"CVD1_4","Overall","Overall",781
+"CVD1_4","Race/Ethnicity","American Indian or Alaska Native",765
+"CVD1_4","Race/Ethnicity","Asian or Pacific Islander",765
+"CVD1_4","Race/Ethnicity","Black, non-Hispanic",765
+"CVD1_4","Race/Ethnicity","Hispanic",765
+"CVD1_4","Race/Ethnicity","White, non-Hispanic",765
+"CVD1_5","Gender","Female",765
+"CVD1_5","Gender","Male",765
+"CVD1_5","Overall","Overall",780
+"CVD1_5","Race/Ethnicity","American Indian or Alaska Native",765
+"CVD1_5","Race/Ethnicity","Asian or Pacific Islander",765
+"CVD1_5","Race/Ethnicity","Black, non-Hispanic",765
+"CVD1_5","Race/Ethnicity","Hispanic",765
+"CVD1_5","Race/Ethnicity","White, non-Hispanic",765
+"CVD2_0","Gender","Female",156
+"CVD2_0","Gender","Male",156
+"CVD2_0","Overall","Overall",156
+"CVD3_1","Gender","Female",309
+"CVD3_1","Gender","Male",309
+"CVD3_1","Overall","Overall",309
+"CVD3_1","Race/Ethnicity","American Indian or Alaska Native",63
+"CVD3_1","Race/Ethnicity","Asian or Pacific Islander",63
+"CVD3_1","Race/Ethnicity","Black, non-Hispanic",63
+"CVD3_1","Race/Ethnicity","Hispanic",63
+"CVD3_1","Race/Ethnicity","White, non-Hispanic",63
+"CVD3_2","Gender","Female",309
+"CVD3_2","Gender","Male",309
+"CVD3_2","Overall","Overall",309
+"CVD3_2","Race/Ethnicity","American Indian or Alaska Native",63
+"CVD3_2","Race/Ethnicity","Asian or Pacific Islander",63
+"CVD3_2","Race/Ethnicity","Black, non-Hispanic",63
+"CVD3_2","Race/Ethnicity","Hispanic",63
+"CVD3_2","Race/Ethnicity","White, non-Hispanic",63
+"CVD4_0","Gender","Female",110
+"CVD4_0","Gender","Male",110
+"CVD4_0","Overall","Overall",220
+"CVD4_0","Race/Ethnicity","Black, non-Hispanic",108
+"CVD4_0","Race/Ethnicity","Hispanic",108
+"CVD4_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"CVD4_0","Race/Ethnicity","Other, non-Hispanic",108
+"CVD4_0","Race/Ethnicity","White, non-Hispanic",108
+"CVD5_0","Gender","Female",110
+"CVD5_0","Gender","Male",110
+"CVD5_0","Overall","Overall",220
+"CVD5_0","Race/Ethnicity","Black, non-Hispanic",108
+"CVD5_0","Race/Ethnicity","Hispanic",108
+"CVD5_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"CVD5_0","Race/Ethnicity","Other, non-Hispanic",108
+"CVD5_0","Race/Ethnicity","White, non-Hispanic",108
+"CVD6_1","Gender","Female",110
+"CVD6_1","Gender","Male",110
+"CVD6_1","Overall","Overall",220
+"CVD6_1","Race/Ethnicity","Black, non-Hispanic",108
+"CVD6_1","Race/Ethnicity","Hispanic",108
+"CVD6_1","Race/Ethnicity","Multiracial, non-Hispanic",108
+"CVD6_1","Race/Ethnicity","Other, non-Hispanic",108
+"CVD6_1","Race/Ethnicity","White, non-Hispanic",108
+"CVD6_2","Overall","Overall",110
+"CVD6_2","Race/Ethnicity","Black, non-Hispanic",54
+"CVD6_2","Race/Ethnicity","Hispanic",54
+"CVD6_2","Race/Ethnicity","Multiracial, non-Hispanic",54
+"CVD6_2","Race/Ethnicity","Other, non-Hispanic",54
+"CVD6_2","Race/Ethnicity","White, non-Hispanic",54
+"CVD7_0","Gender","Female",110
+"CVD7_0","Gender","Male",110
+"CVD7_0","Overall","Overall",220
+"CVD7_0","Race/Ethnicity","Black, non-Hispanic",108
+"CVD7_0","Race/Ethnicity","Hispanic",108
+"CVD7_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"CVD7_0","Race/Ethnicity","Other, non-Hispanic",108
+"CVD7_0","Race/Ethnicity","White, non-Hispanic",108
+"CVD8_0","Overall","Overall",55
+"CVD9_1","Gender","Female",220
+"CVD9_1","Gender","Male",220
+"CVD9_1","Overall","Overall",330
+"CVD9_1","Race/Ethnicity","Black, non-Hispanic",216
+"CVD9_1","Race/Ethnicity","Hispanic",216
+"CVD9_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"CVD9_1","Race/Ethnicity","Other, non-Hispanic",216
+"CVD9_1","Race/Ethnicity","White, non-Hispanic",216
+"CVD9_2","Gender","Female",220
+"CVD9_2","Gender","Male",220
+"CVD9_2","Overall","Overall",330
+"CVD9_2","Race/Ethnicity","Black, non-Hispanic",216
+"CVD9_2","Race/Ethnicity","Hispanic",216
+"CVD9_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"CVD9_2","Race/Ethnicity","Other, non-Hispanic",216
+"CVD9_2","Race/Ethnicity","White, non-Hispanic",216
+"DIA10_0","Gender","Female",220
+"DIA10_0","Gender","Male",220
+"DIA10_0","Overall","Overall",330
+"DIA10_0","Race/Ethnicity","Black, non-Hispanic",216
+"DIA10_0","Race/Ethnicity","Hispanic",216
+"DIA10_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA10_0","Race/Ethnicity","Other, non-Hispanic",216
+"DIA10_0","Race/Ethnicity","White, non-Hispanic",216
+"DIA11_1","Gender","Female",110
+"DIA11_1","Gender","Male",110
+"DIA11_1","Overall","Overall",220
+"DIA11_1","Race/Ethnicity","Black, non-Hispanic",108
+"DIA11_1","Race/Ethnicity","Hispanic",108
+"DIA11_1","Race/Ethnicity","Multiracial, non-Hispanic",108
+"DIA11_1","Race/Ethnicity","Other, non-Hispanic",108
+"DIA11_1","Race/Ethnicity","White, non-Hispanic",108
+"DIA11_2","Gender","Female",110
+"DIA11_2","Gender","Male",110
+"DIA11_2","Overall","Overall",220
+"DIA11_2","Race/Ethnicity","Black, non-Hispanic",108
+"DIA11_2","Race/Ethnicity","Hispanic",108
+"DIA11_2","Race/Ethnicity","Multiracial, non-Hispanic",108
+"DIA11_2","Race/Ethnicity","Other, non-Hispanic",108
+"DIA11_2","Race/Ethnicity","White, non-Hispanic",108
+"DIA11_3","Gender","Female",220
+"DIA11_3","Gender","Male",220
+"DIA11_3","Overall","Overall",330
+"DIA11_3","Race/Ethnicity","Black, non-Hispanic",216
+"DIA11_3","Race/Ethnicity","Hispanic",216
+"DIA11_3","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA11_3","Race/Ethnicity","Other, non-Hispanic",216
+"DIA11_3","Race/Ethnicity","White, non-Hispanic",216
+"DIA12_1","Gender","Female",220
+"DIA12_1","Gender","Male",220
+"DIA12_1","Overall","Overall",330
+"DIA12_1","Race/Ethnicity","Black, non-Hispanic",216
+"DIA12_1","Race/Ethnicity","Hispanic",216
+"DIA12_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA12_1","Race/Ethnicity","Other, non-Hispanic",216
+"DIA12_1","Race/Ethnicity","White, non-Hispanic",216
+"DIA12_2","Gender","Female",220
+"DIA12_2","Gender","Male",220
+"DIA12_2","Overall","Overall",330
+"DIA12_2","Race/Ethnicity","Black, non-Hispanic",216
+"DIA12_2","Race/Ethnicity","Hispanic",216
+"DIA12_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA12_2","Race/Ethnicity","Other, non-Hispanic",216
+"DIA12_2","Race/Ethnicity","White, non-Hispanic",216
+"DIA13_1","Gender","Female",220
+"DIA13_1","Gender","Male",220
+"DIA13_1","Overall","Overall",330
+"DIA13_1","Race/Ethnicity","Black, non-Hispanic",216
+"DIA13_1","Race/Ethnicity","Hispanic",216
+"DIA13_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA13_1","Race/Ethnicity","Other, non-Hispanic",216
+"DIA13_1","Race/Ethnicity","White, non-Hispanic",216
+"DIA13_2","Gender","Female",220
+"DIA13_2","Gender","Male",220
+"DIA13_2","Overall","Overall",330
+"DIA13_2","Race/Ethnicity","Black, non-Hispanic",216
+"DIA13_2","Race/Ethnicity","Hispanic",216
+"DIA13_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA13_2","Race/Ethnicity","Other, non-Hispanic",216
+"DIA13_2","Race/Ethnicity","White, non-Hispanic",216
+"DIA1_1","Gender","Female",765
+"DIA1_1","Gender","Male",765
+"DIA1_1","Overall","Overall",780
+"DIA1_1","Race/Ethnicity","American Indian or Alaska Native",765
+"DIA1_1","Race/Ethnicity","Asian or Pacific Islander",765
+"DIA1_1","Race/Ethnicity","Black, non-Hispanic",765
+"DIA1_1","Race/Ethnicity","Hispanic",765
+"DIA1_1","Race/Ethnicity","White, non-Hispanic",765
+"DIA1_2","Gender","Female",765
+"DIA1_2","Gender","Male",765
+"DIA1_2","Overall","Overall",780
+"DIA1_2","Race/Ethnicity","American Indian or Alaska Native",765
+"DIA1_2","Race/Ethnicity","Asian or Pacific Islander",765
+"DIA1_2","Race/Ethnicity","Black, non-Hispanic",765
+"DIA1_2","Race/Ethnicity","Hispanic",765
+"DIA1_2","Race/Ethnicity","White, non-Hispanic",765
+"DIA2_1","Gender","Female",220
+"DIA2_1","Gender","Male",220
+"DIA2_1","Overall","Overall",330
+"DIA2_1","Race/Ethnicity","Black, non-Hispanic",216
+"DIA2_1","Race/Ethnicity","Hispanic",216
+"DIA2_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA2_1","Race/Ethnicity","Other, non-Hispanic",216
+"DIA2_1","Race/Ethnicity","White, non-Hispanic",216
+"DIA2_2","Overall","Overall",165
+"DIA2_2","Race/Ethnicity","Black, non-Hispanic",108
+"DIA2_2","Race/Ethnicity","Hispanic",108
+"DIA2_2","Race/Ethnicity","Multiracial, non-Hispanic",108
+"DIA2_2","Race/Ethnicity","Other, non-Hispanic",108
+"DIA2_2","Race/Ethnicity","White, non-Hispanic",108
+"DIA3_1","Overall","Overall",55
+"DIA3_2","Overall","Overall",52
+"DIA4_0","Gender","Female",309
+"DIA4_0","Gender","Male",309
+"DIA4_0","Overall","Overall",309
+"DIA4_0","Race/Ethnicity","American Indian or Alaska Native",63
+"DIA4_0","Race/Ethnicity","Asian or Pacific Islander",63
+"DIA4_0","Race/Ethnicity","Black, non-Hispanic",63
+"DIA4_0","Race/Ethnicity","Hispanic",63
+"DIA4_0","Race/Ethnicity","White, non-Hispanic",63
+"DIA5_0","Gender","Female",220
+"DIA5_0","Gender","Male",220
+"DIA5_0","Overall","Overall",330
+"DIA5_0","Race/Ethnicity","Black, non-Hispanic",216
+"DIA5_0","Race/Ethnicity","Hispanic",216
+"DIA5_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA5_0","Race/Ethnicity","Other, non-Hispanic",216
+"DIA5_0","Race/Ethnicity","White, non-Hispanic",216
+"DIA6_0","Gender","Female",220
+"DIA6_0","Gender","Male",220
+"DIA6_0","Overall","Overall",330
+"DIA6_0","Race/Ethnicity","Black, non-Hispanic",216
+"DIA6_0","Race/Ethnicity","Hispanic",216
+"DIA6_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA6_0","Race/Ethnicity","Other, non-Hispanic",216
+"DIA6_0","Race/Ethnicity","White, non-Hispanic",216
+"DIA7_0","Gender","Female",220
+"DIA7_0","Gender","Male",220
+"DIA7_0","Overall","Overall",330
+"DIA7_0","Race/Ethnicity","Black, non-Hispanic",216
+"DIA7_0","Race/Ethnicity","Hispanic",216
+"DIA7_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"DIA7_0","Race/Ethnicity","Other, non-Hispanic",216
+"DIA7_0","Race/Ethnicity","White, non-Hispanic",216
+"DIA8_0","Gender","Female",220
+"DIA8_0","Gender","Male",220
+"DIA8_0","Overall","Overall",220
+"DIA8_0","Race/Ethnicity","Black, non-Hispanic",108
+"DIA8_0","Race/Ethnicity","Hispanic",108
+"DIA8_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"DIA8_0","Race/Ethnicity","Other, non-Hispanic",108
+"DIA8_0","Race/Ethnicity","White, non-Hispanic",108
+"DIA9_0","Gender","Female",309
+"DIA9_0","Gender","Male",309
+"DIA9_0","Overall","Overall",309
+"DIA9_0","Race/Ethnicity","American Indian or Alaska Native",63
+"DIA9_0","Race/Ethnicity","Asian or Pacific Islander",63
+"DIA9_0","Race/Ethnicity","Black, non-Hispanic",63
+"DIA9_0","Race/Ethnicity","Hispanic",63
+"DIA9_0","Race/Ethnicity","White, non-Hispanic",63
+"DIS1_0","Overall","Overall",55
+"IMM1_0","Gender","Female",220
+"IMM1_0","Gender","Male",220
+"IMM1_0","Overall","Overall",330
+"IMM1_0","Race/Ethnicity","Black, non-Hispanic",216
+"IMM1_0","Race/Ethnicity","Hispanic",216
+"IMM1_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"IMM1_0","Race/Ethnicity","Other, non-Hispanic",216
+"IMM1_0","Race/Ethnicity","White, non-Hispanic",216
+"MTH1_0","Gender","Female",220
+"MTH1_0","Gender","Male",220
+"MTH1_0","Overall","Overall",330
+"MTH1_0","Race/Ethnicity","Black, non-Hispanic",216
+"MTH1_0","Race/Ethnicity","Hispanic",216
+"MTH1_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"MTH1_0","Race/Ethnicity","Other, non-Hispanic",216
+"MTH1_0","Race/Ethnicity","White, non-Hispanic",216
+"MTH2_0","Overall","Overall",165
+"MTH2_0","Race/Ethnicity","Black, non-Hispanic",108
+"MTH2_0","Race/Ethnicity","Hispanic",108
+"MTH2_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"MTH2_0","Race/Ethnicity","Other, non-Hispanic",108
+"MTH2_0","Race/Ethnicity","White, non-Hispanic",108
+"MTH3_0","Overall","Overall",55
+"NPAW10_0","Gender","Female",220
+"NPAW10_0","Gender","Male",220
+"NPAW10_0","Overall","Overall",330
+"NPAW10_0","Race/Ethnicity","Black, non-Hispanic",216
+"NPAW10_0","Race/Ethnicity","Hispanic",216
+"NPAW10_0","Race/Ethnicity","Multiracial, non-Hispanic",216
+"NPAW10_0","Race/Ethnicity","Other, non-Hispanic",216
+"NPAW10_0","Race/Ethnicity","White, non-Hispanic",216
+"NPAW11_1","Gender","Female",110
+"NPAW11_1","Gender","Male",110
+"NPAW11_1","Overall","Overall",220
+"NPAW11_1","Race/Ethnicity","Black, non-Hispanic",108
+"NPAW11_1","Race/Ethnicity","Hispanic",108
+"NPAW11_1","Race/Ethnicity","Multiracial, non-Hispanic",108
+"NPAW11_1","Race/Ethnicity","Other, non-Hispanic",108
+"NPAW11_1","Race/Ethnicity","White, non-Hispanic",108
+"NPAW11_2","Gender","Female",110
+"NPAW11_2","Gender","Male",110
+"NPAW11_2","Overall","Overall",220
+"NPAW11_2","Race/Ethnicity","Black, non-Hispanic",108
+"NPAW11_2","Race/Ethnicity","Hispanic",108
+"NPAW11_2","Race/Ethnicity","Multiracial, non-Hispanic",108
+"NPAW11_2","Race/Ethnicity","Other, non-Hispanic",108
+"NPAW11_2","Race/Ethnicity","White, non-Hispanic",108
+"NPAW11_3","Gender","Female",110
+"NPAW11_3","Gender","Male",110
+"NPAW11_3","Overall","Overall",220
+"NPAW11_3","Race/Ethnicity","Black, non-Hispanic",108
+"NPAW11_3","Race/Ethnicity","Hispanic",108
+"NPAW11_3","Race/Ethnicity","Multiracial, non-Hispanic",108
+"NPAW11_3","Race/Ethnicity","Other, non-Hispanic",108
+"NPAW11_3","Race/Ethnicity","White, non-Hispanic",108
+"NPAW11_4","Overall","Overall",55
+"NPAW12_1","Overall","Overall",55
+"NPAW12_2","Overall","Overall",55
+"NPAW13_1","Overall","Overall",55
+"NPAW13_2","Overall","Overall",55
+"NPAW13_3","Overall","Overall",55
+"NPAW13_4","Overall","Overall",55
+"NPAW14_0","Overall","Overall",54
+"NPAW15_0","Overall","Overall",55
+"NPAW16_0","Overall","Overall",55
+"NPAW17_0","Overall","Overall",55
+"NPAW18_0","Overall","Overall",55
+"NPAW19_0","Overall","Overall",54
+"NPAW1_1","Gender","Female",220
+"NPAW1_1","Gender","Male",220
+"NPAW1_1","Overall","Overall",330
+"NPAW1_1","Race/Ethnicity","Black, non-Hispanic",216
+"NPAW1_1","Race/Ethnicity","Hispanic",216
+"NPAW1_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"NPAW1_1","Race/Ethnicity","Other, non-Hispanic",216
+"NPAW1_1","Race/Ethnicity","White, non-Hispanic",216
+"NPAW1_2","Overall","Overall",55
+"NPAW20_0","Overall","Overall",55
+"NPAW21_0","Overall","Overall",55
+"NPAW22_0","Overall","Overall",54
+"NPAW2_1","Gender","Female",220
+"NPAW2_1","Gender","Male",220
+"NPAW2_1","Overall","Overall",330
+"NPAW2_1","Race/Ethnicity","Black, non-Hispanic",216
+"NPAW2_1","Race/Ethnicity","Hispanic",216
+"NPAW2_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"NPAW2_1","Race/Ethnicity","Other, non-Hispanic",216
+"NPAW2_1","Race/Ethnicity","White, non-Hispanic",216
+"NPAW2_2","Overall","Overall",55
+"NPAW2_3","Overall","Overall",165
+"NPAW2_3","Race/Ethnicity","Black, non-Hispanic",108
+"NPAW2_3","Race/Ethnicity","Hispanic",108
+"NPAW2_3","Race/Ethnicity","Multiracial, non-Hispanic",108
+"NPAW2_3","Race/Ethnicity","Other, non-Hispanic",108
+"NPAW2_3","Race/Ethnicity","White, non-Hispanic",108
+"NPAW3_1","Gender","Female",220
+"NPAW3_1","Gender","Male",220
+"NPAW3_1","Overall","Overall",330
+"NPAW3_1","Race/Ethnicity","Black, non-Hispanic",216
+"NPAW3_1","Race/Ethnicity","Hispanic",216
+"NPAW3_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"NPAW3_1","Race/Ethnicity","Other, non-Hispanic",216
+"NPAW3_1","Race/Ethnicity","White, non-Hispanic",216
+"NPAW3_2","Overall","Overall",50
+"NPAW4_1","Overall","Overall",55
+"NPAW4_2","Gender","Female",110
+"NPAW4_2","Gender","Male",110
+"NPAW4_2","Overall","Overall",162
+"NPAW4_2","Race/Ethnicity","Black, non-Hispanic",108
+"NPAW4_2","Race/Ethnicity","Hispanic",108
+"NPAW4_2","Race/Ethnicity","Multiracial, non-Hispanic",108
+"NPAW4_2","Race/Ethnicity","Other, non-Hispanic",108
+"NPAW4_2","Race/Ethnicity","White, non-Hispanic",108
+"NPAW5_1","Overall","Overall",55
+"NPAW5_2","Gender","Female",110
+"NPAW5_2","Gender","Male",110
+"NPAW5_2","Overall","Overall",162
+"NPAW5_2","Race/Ethnicity","Black, non-Hispanic",108
+"NPAW5_2","Race/Ethnicity","Hispanic",108
+"NPAW5_2","Race/Ethnicity","Multiracial, non-Hispanic",108
+"NPAW5_2","Race/Ethnicity","Other, non-Hispanic",108
+"NPAW5_2","Race/Ethnicity","White, non-Hispanic",108
+"NPAW6_0","Overall","Overall",55
+"NPAW7_1","Overall","Overall",55
+"NPAW7_2","Overall","Overall",55
+"NPAW8_0","Overall","Overall",55
+"NPAW9_1","Overall","Overall",54
+"NPAW9_2","Overall","Overall",54
+"OLD1_0","Gender","Female",156
+"OLD1_0","Gender","Male",156
+"OLD1_0","Overall","Overall",156
+"OLD3_1","Gender","Female",162
+"OLD3_1","Gender","Male",162
+"OLD3_1","Overall","Overall",162
+"OLD3_1","Race/Ethnicity","Black, non-Hispanic",108
+"OLD3_1","Race/Ethnicity","Hispanic",108
+"OLD3_1","Race/Ethnicity","Multiracial, non-Hispanic",108
+"OLD3_1","Race/Ethnicity","Other, non-Hispanic",108
+"OLD3_1","Race/Ethnicity","White, non-Hispanic",108
+"OLD3_2","Gender","Female",220
+"OLD3_2","Gender","Male",220
+"OLD3_2","Overall","Overall",220
+"OLD3_2","Race/Ethnicity","Black, non-Hispanic",216
+"OLD3_2","Race/Ethnicity","Hispanic",216
+"OLD3_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"OLD3_2","Race/Ethnicity","Other, non-Hispanic",216
+"OLD3_2","Race/Ethnicity","White, non-Hispanic",216
+"OLD4_0","Overall","Overall",55
+"ORH1_1","Gender","Female",218
+"ORH1_1","Gender","Male",218
+"ORH1_1","Overall","Overall",218
+"ORH1_1","Race/Ethnicity","Black, non-Hispanic",106
+"ORH1_1","Race/Ethnicity","Hispanic",106
+"ORH1_1","Race/Ethnicity","Multiracial, non-Hispanic",106
+"ORH1_1","Race/Ethnicity","Other, non-Hispanic",106
+"ORH1_1","Race/Ethnicity","White, non-Hispanic",106
+"ORH1_2","Gender","Female",52
+"ORH1_2","Gender","Male",52
+"ORH1_2","Overall","Overall",52
+"ORH2_1","Gender","Female",52
+"ORH2_1","Gender","Male",52
+"ORH2_1","Overall","Overall",52
+"ORH2_2","Overall","Overall",55
+"ORH3_0","Overall","Overall",55
+"ORH4_1","Gender","Female",218
+"ORH4_1","Gender","Male",218
+"ORH4_1","Overall","Overall",218
+"ORH4_1","Race/Ethnicity","Black, non-Hispanic",106
+"ORH4_1","Race/Ethnicity","Hispanic",106
+"ORH4_1","Race/Ethnicity","Multiracial, non-Hispanic",106
+"ORH4_1","Race/Ethnicity","Other, non-Hispanic",106
+"ORH4_1","Race/Ethnicity","White, non-Hispanic",106
+"ORH4_2","Gender","Female",218
+"ORH4_2","Gender","Male",218
+"ORH4_2","Overall","Overall",218
+"ORH4_2","Race/Ethnicity","Black, non-Hispanic",106
+"ORH4_2","Race/Ethnicity","Hispanic",106
+"ORH4_2","Race/Ethnicity","Multiracial, non-Hispanic",106
+"ORH4_2","Race/Ethnicity","Other, non-Hispanic",106
+"ORH4_2","Race/Ethnicity","White, non-Hispanic",106
+"ORH4_3","Gender","Female",218
+"ORH4_3","Gender","Male",218
+"ORH4_3","Overall","Overall",218
+"ORH4_3","Race/Ethnicity","Black, non-Hispanic",106
+"ORH4_3","Race/Ethnicity","Hispanic",106
+"ORH4_3","Race/Ethnicity","Multiracial, non-Hispanic",106
+"ORH4_3","Race/Ethnicity","Other, non-Hispanic",106
+"ORH4_3","Race/Ethnicity","White, non-Hispanic",106
+"ORH5_0","Overall","Overall",55
+"OVC1_1","Gender","Female",330
+"OVC1_1","Gender","Male",330
+"OVC1_1","Overall","Overall",330
+"OVC1_1","Race/Ethnicity","Black, non-Hispanic",324
+"OVC1_1","Race/Ethnicity","Hispanic",324
+"OVC1_1","Race/Ethnicity","Multiracial, non-Hispanic",324
+"OVC1_1","Race/Ethnicity","Other, non-Hispanic",324
+"OVC1_1","Race/Ethnicity","White, non-Hispanic",324
+"OVC1_2","Overall","Overall",165
+"OVC1_2","Race/Ethnicity","Black, non-Hispanic",162
+"OVC1_2","Race/Ethnicity","Hispanic",162
+"OVC1_2","Race/Ethnicity","Multiracial, non-Hispanic",162
+"OVC1_2","Race/Ethnicity","Other, non-Hispanic",162
+"OVC1_2","Race/Ethnicity","White, non-Hispanic",162
+"OVC1_3","Overall","Overall",55
+"OVC2_1","Overall","Overall",55
+"OVC2_2","Overall","Overall",55
+"OVC3_1","Overall","Overall",55
+"OVC3_2","Overall","Overall",55
+"OVC4_1","Overall","Overall",52
+"OVC4_2","Overall","Overall",52
+"OVC5_0","Gender","Female",765
+"OVC5_0","Gender","Male",765
+"OVC5_0","Overall","Overall",780
+"OVC5_0","Race/Ethnicity","American Indian or Alaska Native",765
+"OVC5_0","Race/Ethnicity","Asian or Pacific Islander",765
+"OVC5_0","Race/Ethnicity","Black, non-Hispanic",765
+"OVC5_0","Race/Ethnicity","Hispanic",765
+"OVC5_0","Race/Ethnicity","White, non-Hispanic",765
+"OVC6_1","Gender","Female",330
+"OVC6_1","Gender","Male",330
+"OVC6_1","Overall","Overall",330
+"OVC6_1","Race/Ethnicity","Black, non-Hispanic",324
+"OVC6_1","Race/Ethnicity","Hispanic",324
+"OVC6_1","Race/Ethnicity","Multiracial, non-Hispanic",324
+"OVC6_1","Race/Ethnicity","Other, non-Hispanic",324
+"OVC6_1","Race/Ethnicity","White, non-Hispanic",324
+"OVC6_2","Overall","Overall",165
+"OVC6_2","Race/Ethnicity","Black, non-Hispanic",162
+"OVC6_2","Race/Ethnicity","Hispanic",162
+"OVC6_2","Race/Ethnicity","Multiracial, non-Hispanic",162
+"OVC6_2","Race/Ethnicity","Other, non-Hispanic",162
+"OVC6_2","Race/Ethnicity","White, non-Hispanic",162
+"OVC7_1","Gender","Female",330
+"OVC7_1","Gender","Male",330
+"OVC7_1","Overall","Overall",330
+"OVC7_1","Race/Ethnicity","Black, non-Hispanic",324
+"OVC7_1","Race/Ethnicity","Hispanic",324
+"OVC7_1","Race/Ethnicity","Multiracial, non-Hispanic",324
+"OVC7_1","Race/Ethnicity","Other, non-Hispanic",324
+"OVC7_1","Race/Ethnicity","White, non-Hispanic",324
+"OVC7_2","Gender","Female",330
+"OVC7_2","Gender","Male",330
+"OVC7_2","Overall","Overall",330
+"OVC7_2","Race/Ethnicity","Black, non-Hispanic",324
+"OVC7_2","Race/Ethnicity","Hispanic",324
+"OVC7_2","Race/Ethnicity","Multiracial, non-Hispanic",324
+"OVC7_2","Race/Ethnicity","Other, non-Hispanic",324
+"OVC7_2","Race/Ethnicity","White, non-Hispanic",324
+"OVC8_0","Gender","Female",330
+"OVC8_0","Gender","Male",330
+"OVC8_0","Overall","Overall",330
+"OVC8_0","Race/Ethnicity","Black, non-Hispanic",324
+"OVC8_0","Race/Ethnicity","Hispanic",324
+"OVC8_0","Race/Ethnicity","Multiracial, non-Hispanic",324
+"OVC8_0","Race/Ethnicity","Other, non-Hispanic",324
+"OVC8_0","Race/Ethnicity","White, non-Hispanic",324
+"OVC9_0","Overall","Overall",55
+"RPH1_0","Overall","Overall",165
+"RPH1_0","Race/Ethnicity","Black, non-Hispanic",108
+"RPH1_0","Race/Ethnicity","Hispanic",108
+"RPH1_0","Race/Ethnicity","Multiracial, non-Hispanic",108
+"RPH1_0","Race/Ethnicity","Other, non-Hispanic",108
+"RPH1_0","Race/Ethnicity","White, non-Hispanic",108
+"RPH2_0","Overall","Overall",55
+"RPH3_0","Overall","Overall",55
+"TOB10_0","Overall","Overall",55
+"TOB11_1","Gender","Female",220
+"TOB11_1","Gender","Male",220
+"TOB11_1","Overall","Overall",330
+"TOB11_1","Race/Ethnicity","Black, non-Hispanic",216
+"TOB11_1","Race/Ethnicity","Hispanic",216
+"TOB11_1","Race/Ethnicity","Multiracial, non-Hispanic",216
+"TOB11_1","Race/Ethnicity","Other, non-Hispanic",216
+"TOB11_1","Race/Ethnicity","White, non-Hispanic",216
+"TOB11_2","Gender","Female",220
+"TOB11_2","Gender","Male",220
+"TOB11_2","Overall","Overall",330
+"TOB11_2","Race/Ethnicity","Black, non-Hispanic",216
+"TOB11_2","Race/Ethnicity","Hispanic",216
+"TOB11_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"TOB11_2","Race/Ethnicity","Other, non-Hispanic",216
+"TOB11_2","Race/Ethnicity","White, non-Hispanic",216
+"TOB1_1","Overall","Overall",55
+"TOB1_2","Gender","Female",220
+"TOB1_2","Gender","Male",220
+"TOB1_2","Overall","Overall",330
+"TOB1_2","Race/Ethnicity","Black, non-Hispanic",216
+"TOB1_2","Race/Ethnicity","Hispanic",216
+"TOB1_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"TOB1_2","Race/Ethnicity","Other, non-Hispanic",216
+"TOB1_2","Race/Ethnicity","White, non-Hispanic",216
+"TOB1_3","Overall","Overall",165
+"TOB1_3","Race/Ethnicity","Black, non-Hispanic",108
+"TOB1_3","Race/Ethnicity","Hispanic",108
+"TOB1_3","Race/Ethnicity","Multiracial, non-Hispanic",108
+"TOB1_3","Race/Ethnicity","Other, non-Hispanic",108
+"TOB1_3","Race/Ethnicity","White, non-Hispanic",108
+"TOB1_4","Overall","Overall",55
+"TOB2_1","Overall","Overall",55
+"TOB2_2","Gender","Female",220
+"TOB2_2","Gender","Male",220
+"TOB2_2","Overall","Overall",330
+"TOB2_2","Race/Ethnicity","Black, non-Hispanic",216
+"TOB2_2","Race/Ethnicity","Hispanic",216
+"TOB2_2","Race/Ethnicity","Multiracial, non-Hispanic",216
+"TOB2_2","Race/Ethnicity","Other, non-Hispanic",216
+"TOB2_2","Race/Ethnicity","White, non-Hispanic",216
+"TOB3_0","Gender","Female",330
+"TOB3_0","Gender","Male",330
+"TOB3_0","Overall","Overall",330
+"TOB3_0","Race/Ethnicity","Black, non-Hispanic",324
+"TOB3_0","Race/Ethnicity","Hispanic",324
+"TOB3_0","Race/Ethnicity","Multiracial, non-Hispanic",324
+"TOB3_0","Race/Ethnicity","Other, non-Hispanic",324
+"TOB3_0","Race/Ethnicity","White, non-Hispanic",324
+"TOB4_0","Overall","Overall",54
+"TOB5_0","Overall","Overall",54
+"TOB6_0","Overall","Overall",55
+"TOB7_0","Overall","Overall",54
+"TOB8_0","Overall","Overall",55
+"TOB9_0","Overall","Overall",55
