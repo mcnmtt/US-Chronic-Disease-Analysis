@@ -1,0 +1,504 @@
+---
+title: "Analisi Esplorativa - US Chronic Disease"
+output: html_notebook
+---
+
+# Conteggio record per Topic e QuestionID
+
+```{r}
+
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
+dataset <- read.csv(dataset_path, stringsAsFactors = FALSE)
+
+# --- Identificazione record mancanti in datavalue ---
+is_missing <- is.na(dataset$datavalue) | dataset$datavalue == ""
+
+# --- Conteggi totali e mancanti per topic ---
+topic_total <- table(dataset$topic)
+topic_missing <- table(dataset$topic[is_missing])
+
+# allineiamo i vettori (alcuni topic potrebbero non avere NA)
+topic_missing <- topic_missing[names(topic_total)]
+topic_missing[is.na(topic_missing)] <- 0
+
+topic_valid <- topic_total - topic_missing
+
+# matrice per barplot (righe = categorie, colonne = topic)
+counts_matrix <- rbind(Validi = topic_valid, Mancanti = topic_missing)
+
+# --- Ordinamento per numero totale ---
+ord <- order(colSums(counts_matrix), decreasing = TRUE)
+counts_matrix <- counts_matrix[, ord, drop = FALSE]
+
+# --- Plot ---
+op <- par(no.readonly = TRUE)
+on.exit(par(op), add = TRUE)
+
+par(mar = c(10, 6, 4, 2) + 0.1)  # spazio per etichette
+
+barplot(
+  counts_matrix,
+  main = "Numero di record per Topic",
+  ylab = "Numero di record",
+  col = c("blue", "red"),
+  border = "black",
+  las = 2,             # ruota etichette x
+  cex.names = 0.8,
+  mgp = c(4, 1, 0)     # sposta più a sinistra l'etichetta ylab
+)
+
+legend("topright", legend = c("Validi", "Mancanti"),
+       fill = c("blue", "red"), bty = "n")
+```
+
+```{r}
+
+# --- Filtro per topic Alcohol ---
+alcohol_data <- subset(dataset, topic == "Alcohol")
+
+# --- Identificazione record mancanti ---
+is_missing <- is.na(alcohol_data$datavalue) | alcohol_data$datavalue == ""
+
+# --- Conteggi totali e mancanti per questionid ---
+qid_total   <- table(alcohol_data$questionid)
+qid_missing <- table(alcohol_data$questionid[is_missing])
+
+# Allineiamo i vettori
+qid_missing <- qid_missing[names(qid_total)]
+qid_missing[is.na(qid_missing)] <- 0
+
+qid_valid <- qid_total - qid_missing
+
+# Matrice per barplot (righe = categorie, colonne = questionid)
+counts_matrix <- rbind(Validi = qid_valid, Mancanti = qid_missing)
+
+# Ordinamento per numero totale decrescente
+ord <- order(colSums(counts_matrix), decreasing = TRUE)
+counts_matrix <- counts_matrix[, ord, drop = FALSE]
+
+# --- Plot ---
+op <- par(no.readonly = TRUE)
+on.exit(par(op), add = TRUE)
+
+par(mar = c(12, 6, 4, 2) + 0.1)  # spazio per etichette lunghe
+
+barplot(
+  counts_matrix,
+  main = "Numero di record per QuestionID (Topic = 'Alcohol')",
+  ylab = "Numero di record",
+  col = c("blue", "red"),
+  border = "black",
+  las = 2,             # ruota etichette x
+  cex.names = 0.8,
+  mgp = c(3.5, 1, 0)
+)
+
+legend("topright", legend = c("Validi", "Mancanti"),
+       fill = c("blue", "red"), bty = "n")
+```
+
+# Conteggio record Topic per anno di acquisizione
+
+```{r}
+# install.packages(c("dplyr", "ggplot2"))  # se servono
+library(dplyr)
+library(ggplot2)
+
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
+df <- read.csv(dataset_path, stringsAsFactors = FALSE)
+
+# Uniforma i nomi delle colonne (topic, datavalue, yearstart, questionid, ecc.)
+names(df) <- tolower(names(df))
+
+# Crea variabile 'status' (Validi / Mancanti) in base a datavalue
+df <- df %>%
+  mutate(
+    status = ifelse(is.na(datavalue) | datavalue == "", "Mancanti", "Validi"),
+    # ordina gli anni in modo crescente (fattore ordinato per x)
+    yearstart = as.factor(as.integer(yearstart))
+  )
+
+# Aggrega per topic, anno, status
+agg <- df %>%
+  group_by(topic, yearstart, status) %>%
+  summarise(n = n(), .groups = "drop")
+
+# Ordina i topic per numerosità totale (facilita la lettura)
+topic_order <- agg %>%
+  group_by(topic) %>%
+  summarise(total = sum(n), .groups = "drop") %>%
+  arrange(desc(total)) %>%
+  pull(topic)
+
+agg$topic <- factor(agg$topic, levels = topic_order)
+
+# Plot: barre impilate Validi (blu) / Mancanti (rosso), facet per topic
+p <- ggplot(agg, aes(x = yearstart, y = n, fill = status)) +
+  geom_col() +
+  facet_wrap(~ topic, scales = "free_y") +
+  labs(
+    title = "Distribuzione dei record per anno e topic",
+    subtitle = "",
+    x = "Anno (yearstart)",
+    y = "Numero di record",
+    fill = NULL
+  ) +
+  scale_fill_manual(values = c("Validi" = "blue", "Mancanti" = "red")) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(face = "bold")
+  )
+
+print(p)
+```
+
+# DataValueType per ogni QuestionID
+
+```{r}
+library(grid)
+library(gtable)
+
+# --- Parametri ---
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
+MAX_ROWS_PER_BLOCK <- 40   # righe per tabella prima di spezzare
+SHOW_TOPICS <- NULL        # es. c("Alcohol","Cancer") per limitarli; NULL = tutti
+
+# --- Caricamento e preparazione ---
+df <- read.csv(dataset_path, stringsAsFactors = FALSE)
+names(df) <- tolower(names(df))
+
+req_cols <- c("topic", "questionid", "datavaluetype", "datavalueunit")
+miss <- setdiff(req_cols, names(df))
+if (length(miss) > 0) stop("Mancano queste colonne nel CSV: ", paste(miss, collapse = ", "))
+
+df_clean <- df %>%
+  mutate(datavalueunit = ifelse(is.na(datavalueunit), "", datavalueunit)) %>%
+  select(topic, questionid, datavaluetype, datavalueunit) %>%
+  distinct() %>%
+  arrange(topic, questionid, datavaluetype, datavalueunit)
+
+topics <- sort(unique(df_clean$topic))
+if (!is.null(SHOW_TOPICS)) {
+  topics <- intersect(topics, SHOW_TOPICS)
+}
+
+# --- Funzione: crea e disegna le tabelle per un topic nel notebook ---
+draw_topic_tables <- function(topic_name, data, max_rows_per_block = 40) {
+  tab <- data %>%
+    filter(topic == topic_name) %>%
+    select(questionid, datavaluetype, datavalueunit) %>%
+    arrange(questionid, datavaluetype, datavalueunit)
+
+  if (nrow(tab) == 0) {
+    grid.newpage()
+    grid.draw(tableGrob(
+      data.frame(Messaggio = sprintf("Nessuna combinazione per topic: %s", topic_name)),
+      rows = NULL
+    ))
+    return(invisible(NULL))
+  }
+
+  # spezza in blocchi se lungo
+  blocks <- split(tab, ceiling(seq_len(nrow(tab)) / max_rows_per_block))
+
+  for (i in seq_along(blocks)) {
+    sub <- blocks[[i]]
+    tg <- tableGrob(
+      sub,
+      rows = NULL,
+      theme = ttheme_minimal(
+        core = list(fg_params = list(cex = 0.75)),
+        colhead = list(fg_params = list(fontface = "bold", cex = 0.8))
+      )
+    )
+
+    title_text <- if (length(blocks) == 1) {
+      sprintf("Topic: %s — datavaluetype e datavalueunit per QuestionID", topic_name)
+    } else {
+      sprintf("Topic: %s — datavaluetype e datavalueunit per QuestionID (Parte %d/%d)",
+              topic_name, i, length(blocks))
+    }
+
+    title <- textGrob(title_text, gp = gpar(fontface = "bold", cex = 1))
+    padding <- unit(5, "mm")
+    g <- gtable_add_rows(tg, heights = grobHeight(title) + padding, pos = 0)
+    g <- gtable_add_grob(g, title, t = 1, l = 1, r = ncol(g))
+
+    grid.newpage()
+    grid.draw(g)
+  }
+}
+
+# --- Disegna tutte le tabelle nel notebook (una "pagina" per topic/blocco) ---
+for (tp in topics) {
+  draw_topic_tables(tp, df_clean, max_rows_per_block = MAX_ROWS_PER_BLOCK)
+}
+```
+
+# Visualizzazione entry StratificationCategory
+
+```{r}
+library(DT)
+
+dataset <- "u_s_chronic_disease_indicators_cdi.csv"
+df <- read.csv(dataset, stringsAsFactors = FALSE)
+names(df) <- tolower(names(df))
+
+# (opzionale) filtra un topic specifico
+# df <- dplyr::filter(df, topic == "Alcohol")
+
+result <- df %>%
+  group_by(questionid, stratificationcategory1, stratification1) %>%
+  summarise(Num_Entry = n(), .groups = "drop") %>%
+  rename(
+    QuestionID = questionid,
+    Stratification_Category = stratificationcategory1,
+    Stratification = stratification1
+  ) %>%
+  arrange(QuestionID, Stratification_Category, Stratification)
+
+datatable(
+  result,
+  rownames = FALSE,
+  options = list(pageLength = 25, autoWidth = TRUE),
+  filter = "top",
+  class = "display compact nowrap"
+)
+```
+
+# Verifica stratification per analisi BIAS
+
+```{r}
+library(ggplot2)
+
+# Tieni solo righe con stratificazione presente
+df <- df %>%
+  filter(!is.na(stratificationid1), stratificationid1 != "") %>%
+  mutate(
+    # uniforma in maiuscolo per mappare i colori in modo stabile
+    stratificationcategoryid1 = toupper(stratificationcategoryid1),
+    topic = factor(topic)
+  )
+
+# (opzionale) ordina le etichette sull'asse x per frequenza (per topic)
+# se vuoi l'ordine "così come nei dati", commenta questo blocco
+df <- df %>%
+  group_by(topic, stratificationid1) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  group_by(topic) %>%
+  arrange(topic, desc(n), .by_group = TRUE) %>%
+  mutate(xlvl = factor(stratificationid1, levels = unique(stratificationid1))) %>%
+  select(topic, stratificationid1, xlvl) %>%
+  right_join(df, by = c("topic", "stratificationid1")) %>%
+  mutate(stratificationid1 = ifelse(is.na(xlvl), stratificationid1, as.character(xlvl))) %>%
+  mutate(stratificationid1 = factor(stratificationid1, levels = unique(stratificationid1))) %>%
+  select(-xlvl)
+
+# --- Colori fissi come nell’esempio ---
+fill_values <- c(
+  "GENDER"  = "#E74C3C",  # rosso
+  "OVERALL" = "#2ECC71",  # verde
+  "RACE"    = "#3498DB"   # blu
+)
+# Se nel dataset ci sono altre categorie, assegna un grigio
+unknown_levels <- setdiff(unique(df$stratificationcategoryid1), names(fill_values))
+if (length(unknown_levels) > 0) {
+  extra_cols <- setNames(rep("#95A5A6", length(unknown_levels)), unknown_levels)
+  fill_values <- c(fill_values, extra_cols)
+}
+
+# --- Plot nel notebook ---
+p <- ggplot(df, aes(x = stratificationid1, fill = stratificationcategoryid1)) +
+  geom_bar(position = position_dodge(width = 0.9)) +
+  facet_wrap(~ topic, scales = "free_y") +
+  labs(
+    title = "Analisi della Rappresentatività dei Dati per Topic",
+    x = "stratification",
+    y = "count",
+    fill = "stratification category"
+  ) +
+  scale_fill_manual(values = fill_values, drop = FALSE) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text  = element_text(face = "bold"),
+    plot.title  = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+print(p)
+```
+
+# Distribuzioni divise per DataValueType
+
+Codice per plottare distribuzioni di frequenza dei valori contenuti in datavalue per ogni tipologia di datavaluetype divisi per questionid/topic.
+
+```{r}
+library(ggplot2)
+
+# ---------------- Parametri ----------------
+DATASET_PATH <- "u_s_chronic_disease_indicators_cdi.csv"
+TOP_N_COMBINATIONS <- NULL  # es. 20 per limitare; NULL = tutte
+MIN_ROWS_PER_COMBO <- 1     # es. 30 per mostrare solo combinazioni con almeno 30 righe
+FACET_THRESHOLD <- 16       # se #combo <= 16 usa facet unico, altrimenti loop
+
+# --------------- Caricamento ---------------
+df <- read.csv(DATASET_PATH, na.strings = c("", "NA", "NULL", "null"),
+               stringsAsFactors = FALSE)
+names(df) <- tolower(names(df))
+
+stopifnot(all(c("questionid","datavaluetype","datavalue") %in% names(df)))
+
+# datavalue numerico e rimozione NA
+df$datavalue <- suppressWarnings(as.numeric(df$datavalue))
+df <- df %>% filter(!is.na(datavalue))
+
+# --------------- Scelta combinazioni ---------------
+# Conta righe per combinazione e ordina (più popolose prima)
+combo_stats <- df %>%
+  count(questionid, datavaluetype, name = "n_rows") %>%
+  arrange(desc(n_rows)) %>%
+  filter(n_rows >= MIN_ROWS_PER_COMBO)
+
+if (!is.null(TOP_N_COMBINATIONS)) {
+  combo_stats <- head(combo_stats, TOP_N_COMBINATIONS)
+}
+
+# --------------- Frequenze per valore ---------------
+freq_df <- df %>%
+  semi_join(combo_stats, by = c("questionid","datavaluetype")) %>%
+  group_by(questionid, datavaluetype, datavalue) %>%
+  summarise(frequency = n(), .groups = "drop") %>%
+  arrange(questionid, datavaluetype, datavalue)
+
+# Se non c'è nulla da plottare, esci
+if (nrow(freq_df) == 0) {
+  stop("Nessun dato disponibile dopo i filtri (controlla MIN_ROWS_PER_COMBO/TOP_N_COMBINATIONS).")
+}
+
+# Ordini fattori per un layout stabile
+freq_df <- freq_df %>%
+  mutate(
+    questionid    = factor(questionid, levels = unique(combo_stats$questionid)),
+    datavaluetype = factor(datavaluetype, levels = unique(combo_stats$datavaluetype))
+  )
+
+num_combos <- nrow(combo_stats)
+
+# --------------- Caso A: Facet unico (≤ FACET_THRESHOLD) ---------------
+if (num_combos <= FACET_THRESHOLD) {
+  # Facet per combinazione questionid × datavaluetype
+  p <- ggplot(freq_df, aes(x = datavalue, y = frequency)) +
+    geom_col(fill = "blue", alpha = 0.7, width = 0.9) +
+    facet_grid(datavaluetype ~ questionid, scales = "free_y") +
+    labs(
+      title = "Distribuzione di Frequenza di datavalue per QuestionID × DataValueType",
+      x = "datavalue",
+      y = "Frequenza"
+    ) +
+    theme_minimal(base_size = 11) +
+    theme(
+      strip.text = element_text(face = "bold"),
+      plot.title = element_text(face = "bold"),
+      panel.grid.minor = element_blank()
+    )
+  print(p)
+
+# --------------- Caso B: Molte combinazioni → stampa una per volta ---------------
+} else {
+  # Loop e stampa nel notebook
+  combos <- combo_stats %>% select(questionid, datavaluetype)
+  for (i in seq_len(nrow(combos))) {
+    qi  <- combos$questionid[i]
+    dvt <- combos$datavaluetype[i]
+
+    sub <- freq_df %>%
+      filter(questionid == qi, datavaluetype == dvt)
+
+    if (nrow(sub) == 0) next
+
+    p <- ggplot(sub, aes(x = datavalue, y = frequency)) +
+      geom_col(fill = "blue", alpha = 0.7, width = 0.9) +
+      labs(
+        title = paste("Distribuzione di Frequenza —", qi, "—", dvt),
+        x = "datavalue",
+        y = "Frequenza"
+      ) +
+      theme_minimal(base_size = 12) +
+      theme(
+        plot.title = element_text(face = "bold"),
+        panel.grid.minor = element_blank()
+      )
+    print(p)
+  }
+}
+```
+
+# Moda dati qualitativi
+
+```{r}
+library(DT)
+library(stringr)
+
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
+df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"),
+               stringsAsFactors = FALSE)
+names(df) <- tolower(names(df))
+
+# tieni solo i datavaluetypeid di interesse
+keep_types <- c("LclCntrlAlc", "CommHstLiab", "YesNo")
+df_filtered <- df %>%
+  filter(datavaluetypeid %in% keep_types)
+
+# Assicura che datavalue sia trattato come qualitativo (character)
+df_filtered <- df_filtered %>%
+  mutate(datavalue = as.character(datavalue))
+
+# Funzione moda robusta: ignora NA, ritorna tutte le mode (in caso di ex-aequo)
+mode_stats <- function(x) {
+  x <- x[!is.na(x)]
+  if (length(x) == 0) {
+    return(list(mode_value = NA_character_, mode_count = NA_integer_, n = 0))
+  }
+  tab <- sort(table(x), decreasing = TRUE)
+  maxc <- as.integer(tab[1])
+  modes <- names(tab[tab == maxc])
+  list(
+    mode_value = paste(modes, collapse = " | "),  # tutte le mode
+    mode_count = maxc,
+    n = length(x)
+  )
+}
+
+# Calcolo moda e statistiche per topic × questionid × datavaluetypeid
+modes_df <- df_filtered %>%
+  group_by(topic, questionid, datavaluetypeid) %>%
+  summarise(
+    stats = list(mode_stats(datavalue)),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    mode_value = vapply(stats, `[[`, character(1), "mode_value"),
+    mode_count = vapply(stats, `[[`, integer(1),   "mode_count"),
+    n          = vapply(stats, `[[`, integer(1),   "n"),
+    mode_pct   = ifelse(n > 0, round(100 * mode_count / n, 1), NA_real_)
+  ) %>%
+  select(topic, questionid, datavaluetypeid, mode_value, mode_count, mode_pct, n) %>%
+  arrange(topic, questionid, datavaluetypeid)
+
+# Mostra direttamente nel notebook (tabella interattiva filtrabile/ordinabile)
+datatable(
+  modes_df,
+  rownames = FALSE,
+  filter = "top",
+  options = list(pageLength = 25, autoWidth = TRUE),
+  colnames = c(
+    "Topic", "QuestionID", "DataValueTypeID",
+    "Moda (valori)", "Frequenza moda", "% moda", "N osservazioni"
+  ),
+  class = "display compact nowrap"
+)
+
+```

@@ -1,0 +1,126 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Addestriamo una **Random Forest di classificazione** con 300 alberi (`ntree=300`), cercando di prevedere la variabile target `stratification1` (le etnie) a partire da:
+
+-   `datavalue`
+
+-   `questionid`
+
+-   `datavaluetypeid`
+
+-   `datavalueunit`
+
+-   `topic`
+
+In pratica, il modello deve provare a capire **a quale gruppo etnico appartiene un record**.
+
+### Filtro topic (Diabetes & Cardiovascular Disease)
+
+```{r}
+library(dplyr)
+
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
+
+df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"))
+
+df_filtered <- df %>%
+  filter(topic %in% c("Diabetes", "Cardiovascular Disease"))
+```
+
+```{r}
+library(dplyr)
+library(randomForest)
+
+# parto dal dataset già filtrato sui topic (df_filtered)
+# creo una versione pulita con target e predittori
+df_sup <- df_filtered %>%
+  filter(stratificationcategory1 == "Race/Ethnicity") %>%
+  mutate(
+    datavalue_num = suppressWarnings(as.numeric(gsub(",", ".", datavalue, fixed = TRUE))),
+    stratification1 = factor(stratification1)  # target come fattore
+  ) %>%
+  select(stratification1, topic, questionid, datavaluetypeid, datavalueunit, datavalue_num)
+
+# Codifico variabili categoriche come fattori
+df_sup <- df_sup %>%
+  mutate(
+    topic = factor(topic),
+    questionid = factor(questionid),
+    datavaluetypeid = factor(datavaluetypeid),
+    datavalueunit = factor(datavalueunit)
+  )
+
+# Rimuovo eventuali NA
+df_sup <- na.omit(df_sup)
+
+# Split in training (70%) e test (30%)
+set.seed(123)
+train_idx <- sample(seq_len(nrow(df_sup)), size = 0.7 * nrow(df_sup))
+train <- df_sup[train_idx, ]
+test  <- df_sup[-train_idx, ]
+
+# Random Forest supervisionato
+rf_model <- randomForest(
+  stratification1 ~ .,
+  data = train,
+  ntree = 300,
+  mtry = 3,
+  importance = TRUE
+)
+
+print(rf_model)
+
+# Predizioni sul test
+pred <- predict(rf_model, newdata = test)
+
+# Accuracy
+acc <- mean(pred == test$stratification1)
+cat("Accuracy sul test set:", round(acc * 100, 2), "%\n")
+
+# Importanza delle variabili
+importance(rf_model)
+varImpPlot(rf_model)
+```
+
+# Interpretazione dei risultati
+
+## Errori e accuratezza
+
+**OOB estimate error rate = 44.98%** → significa che il modello sbaglia quasi il 45% dei casi già sul training, quindi è **moderatamente debole**.
+
+**Accuracy sul test = 55.18%** → su dati mai visti indovina poco più della metà dei casi, quindi meglio del caso (che sarebbe ≈14% con 7 classi), ma non eccellente.
+
+Questo ci dice che:
+
+-   I gruppi etnici non sono separabili in modo netto solo con le variabili usate.
+
+<!-- -->
+
+-   Probabilmente alcuni gruppi hanno pattern simili → il modello li confonde.
+
+## Confusion Matrix
+
+-   **White, non-Hispanic**: 3.973 correttamente predetti, errore \~16% → il modello riconosce abbastanza bene questo gruppo.
+
+-   **Black, non-Hispanic**: errore \~54%
+
+-   **Hispanic**: errore \~57%
+
+-   **Asian or Pacific Islander**: errore \~47%
+
+-   **American Indian or Alaska Native**: errore \~76%
+
+-   **Multiracial** e **Other**: errore oltre 90% → quasi mai riconosciuti correttamente.
+
+### Intepretazione
+
+-   Il modello riesce soprattutto a distinguere bene i **White, non-Hispanic** (probabilmente perché più rappresentati nei dati).
+
+-   Gruppi **minoritari** (es. American Indian, Multiracial, Other) vengono confusi quasi sempre, perché hanno pochi record e valori sovrapposti.
+
+-   Gruppi **Black** e **Hispanic** hanno una certa separabilità, ma vengono confusi spesso tra loro.
+
+Tutto ciò indica che in piccola parte sono presenti dei pattern diversi tra gruppi etnici rispetto ai fenomeni sanitari ma la bassa accuratezza indica che i gruppi minoritari hanno pochi dati e sono difficili da distinguere e spesso ci sono sovrapposizioni tra i valori → etnie diverse possono avere andamenti simili sugli indicatori considerati.

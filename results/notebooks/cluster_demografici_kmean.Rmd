@@ -1,0 +1,223 @@
+---
+title: "Cluster Demografici"
+output: html_notebook
+---
+
+# Analisi cluster demografici con algoritmo non supervisionato (k-mean)
+
+**RQ:** *A partire dalla stratificazione del dataset per categorie demografiche, è possibile individuare cluster in relazione ai fenomeni osservati?*
+
+# Filtro topic: Diabetes & Cardiovascular Disease
+
+```{r}
+library(dplyr)
+
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
+
+df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"))
+
+df_filtered <- df %>%
+  filter(topic %in% c("Diabetes", "Cardiovascular Disease"))
+
+```
+
+### Conteggio categorie demografiche univoche
+
+```{r}
+df_filtered %>%
+  filter(stratificationcategory1 == "Race/Ethnicity") %>%
+  count(stratification1) %>%
+  arrange(desc(n))
+
+```
+
+### Visualizzazione question univoche
+
+```{r}
+library(dplyr)
+
+qid_map <- df_filtered %>%
+  distinct(questionid, question) %>%
+  arrange(questionid)
+
+# Mostra la tabella
+knitr::kable(qid_map, col.names = c("QuestionID", "Question"))
+
+```
+
+# Preparazione datavalue per K-Means
+
+```{r}
+library(dplyr)
+
+# conversione in numerico di datavalue (da eventuale stringa) e gestione virgole (da , a .)
+df_k <- df_filtered %>%
+  mutate(
+    datavalue_num = suppressWarnings(as.numeric(gsub(",", ".", datavalue, fixed = TRUE))),
+    .row = dplyr::row_number()
+  )
+
+```
+
+# K-Means (k = 7) per ciascuna combinazione (topic, questionid, datavaluetypeid)
+
+```{r}
+library(dplyr)
+library(purrr)
+
+set.seed(9)
+
+# esegue il clustering per ogni combinazione di topic, questionid e datavaluetypeid
+clustered <- df_k %>%
+  # raggruppa i dati
+  group_by(topic, questionid, datavaluetypeid) %>%
+  # applica una funzione personalizzata a ciascun gruppo
+  group_modify(~{
+    # prende il sottoinsieme di dati relativo al gruppo
+    d <- .x
+    # rimuove le righe con valori mancanti in datavalue_num
+    d_non_na <- d %>% filter(!is.na(datavalue_num))
+
+    # se il gruppo ha meno di 7 righe non può essere diviso in 7 cluster
+    if (nrow(d_non_na) < 7) {
+      # assegna valori mancanti alla colonna cluster
+      d$cluster <- NA_integer_
+      # restituisce il gruppo così com’è
+      d
+    } else {
+      # esegue kmeans con 7 cluster e 25 inizializzazioni
+      km <- kmeans(d_non_na$datavalue_num, centers = 7, nstart = 25)
+      # assegna l’etichetta di cluster ai dati senza valori mancanti
+      d_non_na$cluster <- km$cluster
+
+      # unisce i cluster calcolati ai dati originali usando l’indice di riga
+      d %>% left_join(d_non_na %>% select(.row, cluster), by = ".row")
+    }
+  }) %>%
+  # rimuove la struttura di raggruppamento dal risultato finale
+  ungroup()
+
+# anteprima dei risultati con le colonne principali
+clustered %>%
+  select(topic, questionid, datavaluetypeid, datavalue_num, cluster) %>%
+  head()
+
+```
+
+# Percentuali per stratification (solo Race/Ethnicity) dentro ciascun cluster
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+# calcolo delle percentuali per ogni cluster e stratification
+cluster_strat_pct <- clustered %>%
+  # filtra solo i record con categoria race/ethnicity ed esclude cluster mancanti
+  filter(stratificationcategory1 == "Race/Ethnicity", !is.na(cluster)) %>%
+  # raggruppa per topic, questionid, datavaluetypeid e cluster
+  group_by(topic, questionid, datavaluetypeid, cluster) %>%
+  # calcola la dimensione totale del cluster
+  mutate(cluster_total = n()) %>%
+  # raggruppa ulteriormente per stratification1
+  group_by(topic, questionid, datavaluetypeid, cluster, stratification1) %>%
+  # calcola il numero di elementi per ogni combinazione
+  summarise(
+    n = n(),
+    cluster_total = dplyr::first(cluster_total),
+    .groups = "drop_last"
+  ) %>%
+  # calcola la percentuale di ciascuna categoria sul totale del cluster
+  mutate(pct = 100 * n / cluster_total) %>%
+  # rimuove i raggruppamenti
+  ungroup() %>%
+  # ordina i risultati
+  arrange(topic, questionid, datavaluetypeid, cluster, desc(pct))
+
+# anteprima delle prime 20 righe della tabella finale
+cluster_strat_pct %>% head(20)
+
+```
+
+# Grafico d’esempio sulla combinazione più rappresentata
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# definisce una funzione che genera 7 grafici a torta per una combinazione di topic, questionid e datavaluetypeid
+plot_pies_for_combo <- function(topic_sel, questionid_sel, datavaluetypeid_sel) {
+  # filtra i dati per la combinazione scelta e completa i cluster mancanti
+  df_plot <- cluster_strat_pct %>%
+    filter(
+      topic == topic_sel,
+      questionid == questionid_sel,
+      datavaluetypeid == datavaluetypeid_sel
+    ) %>%
+    complete(
+      cluster = 1:7,
+      stratification1,
+      fill = list(n = 0, cluster_total = 0, pct = 0)
+    ) %>%
+    mutate(label = ifelse(pct > 0, paste0(round(pct, 1), "%"), NA))
+
+  # calcola i centroidi dei cluster per la combinazione scelta
+  centroids <- clustered %>%
+    filter(topic == topic_sel,
+           questionid == questionid_sel,
+           datavaluetypeid == datavaluetypeid_sel,
+           !is.na(cluster)) %>%
+    group_by(cluster) %>%
+    summarise(centroid = mean(datavalue_num, na.rm = TRUE), .groups = "drop")
+
+  # aggiunge i centroidi ai dati e crea etichette personalizzate per i facet
+  df_plot <- df_plot %>%
+    left_join(centroids, by = "cluster") %>%
+    mutate(facet_lab = paste0("Cluster ", cluster, "\nμ=", round(centroid, 1)))
+
+  # costruisce il grafico a torta per ciascun cluster
+  ggplot(df_plot, aes(x = "", y = pct, fill = stratification1)) +
+    geom_col(width = 1) +
+    coord_polar(theta = "y") +
+    geom_text(
+      aes(label = label),
+      position = position_stack(vjust = 0.5),
+      size = 3,
+      na.rm = TRUE
+    ) +
+    facet_wrap(~ facet_lab, ncol = 7) +
+    labs(
+      title = paste0(
+        "distribuzione % race/ethnicity (k=7)\n",
+        topic_sel, " | qid: ", questionid_sel, " | typeid: ", datavaluetypeid_sel
+      ),
+      fill = "race/ethnicity"
+    ) +
+    theme_void() +
+    theme(
+      strip.text = element_text(size = 8),
+      plot.title = element_text(hjust = 0.5, face = "bold", size = 12),
+      legend.position = "right"
+    )
+}
+```
+
+```{r}
+# crea una tabella con le combinazioni uniche di topic, questionid e datavaluetypeid ordinate
+combos <- cluster_strat_pct %>%
+  dplyr::distinct(topic, questionid, datavaluetypeid) %>%
+  dplyr::arrange(topic, questionid, datavaluetypeid)
+
+# ciclo per generare un grafico per ciascuna combinazione
+for (i in seq_len(nrow(combos))) {
+  # estrae i valori della combinazione corrente
+  tp  <- combos$topic[i]
+  qid <- combos$questionid[i]
+  dvt <- combos$datavaluetypeid[i]
+  
+  # genera il grafico a torta per la combinazione corrente
+  p <- plot_pies_for_combo(tp, qid, dvt)
+  # stampa il grafico
+  print(p)
+}
+```
