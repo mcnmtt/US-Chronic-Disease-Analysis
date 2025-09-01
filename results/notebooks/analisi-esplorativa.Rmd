@@ -54,7 +54,7 @@ legend("topright", legend = c("Validi", "Mancanti"),
 ```{r}
 
 # --- Filtro per topic Alcohol ---
-alcohol_data <- subset(dataset, topic == "Alcohol")
+alcohol_data <- subset(dataset, topic == "Diabetes")
 
 # --- Identificazione record mancanti ---
 is_missing <- is.na(alcohol_data$datavalue) | alcohol_data$datavalue == ""
@@ -84,7 +84,7 @@ par(mar = c(12, 6, 4, 2) + 0.1)  # spazio per etichette lunghe
 
 barplot(
   counts_matrix,
-  main = "Numero di record per QuestionID (Topic = 'Alcohol')",
+  main = "Numero di record per QuestionID",
   ylab = "Numero di record",
   col = c("blue", "red"),
   border = "black",
@@ -157,83 +157,117 @@ print(p)
 # DataValueType per ogni QuestionID
 
 ```{r}
-library(grid)
-library(gtable)
+# --- Unica dipendenza esterna ---
+# install.packages("gridExtra") # se serve
+library(gridExtra)  # tableGrob, arrangeGrob, ttheme_minimal
+# (grid viene caricato automaticamente)
 
 # --- Parametri ---
 dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
-MAX_ROWS_PER_BLOCK <- 40   # righe per tabella prima di spezzare
-SHOW_TOPICS <- NULL        # es. c("Alcohol","Cancer") per limitarli; NULL = tutti
+MAX_ROWS_PER_BLOCK <- 40                 # righe per tabella prima di spezzare
+SHOW_TOPICS <- NULL                      # es. c("Alcohol","Cancer") o NULL per tutti
+OUTPUT_DIR <- "tabelle_topic"            # cartella output immagini
+IMG_EXT <- "png"                         # "png" o "jpg"
+WIDTH <- 1600                            # pixel
+HEIGHT <- 1000                           # pixel
+DPI <- 150                               # non usato da png(), utile se converti
 
-# --- Caricamento e preparazione ---
-df <- read.csv(dataset_path, stringsAsFactors = FALSE)
+# --- Helper: slug per nomi file ---
+slugify <- function(x) {
+  x <- tolower(gsub("[^a-z0-9]+", "-", x))
+  gsub("(^-|-$)", "", x)
+}
+
+if (!dir.exists(OUTPUT_DIR)) dir.create(OUTPUT_DIR, recursive = TRUE)
+
+# --- Caricamento e preparazione (solo base R) ---
+df <- read.csv(dataset_path, stringsAsFactors = FALSE, check.names = FALSE)
 names(df) <- tolower(names(df))
 
 req_cols <- c("topic", "questionid", "datavaluetype", "datavalueunit")
 miss <- setdiff(req_cols, names(df))
-if (length(miss) > 0) stop("Mancano queste colonne nel CSV: ", paste(miss, collapse = ", "))
+if (length(miss) > 0) stop(paste("Mancano colonne:", paste(miss, collapse = ", ")))
 
-df_clean <- df %>%
-  mutate(datavalueunit = ifelse(is.na(datavalueunit), "", datavalueunit)) %>%
-  select(topic, questionid, datavaluetype, datavalueunit) %>%
-  distinct() %>%
-  arrange(topic, questionid, datavaluetype, datavalueunit)
+# pulizia minima
+dvunit <- df[["datavalueunit"]]
+dvunit[is.na(dvunit)] <- ""
+df_clean <- unique(data.frame(
+  topic = df[["topic"]],
+  questionid = df[["questionid"]],
+  datavaluetype = df[["datavaluetype"]],
+  datavalueunit = dvunit,
+  stringsAsFactors = FALSE
+))
+ord <- with(df_clean, order(topic, questionid, datavaluetype, datavalueunit))
+df_clean <- df_clean[ord, , drop = FALSE]
 
 topics <- sort(unique(df_clean$topic))
-if (!is.null(SHOW_TOPICS)) {
-  topics <- intersect(topics, SHOW_TOPICS)
+if (!is.null(SHOW_TOPICS)) topics <- intersect(topics, SHOW_TOPICS)
+
+# --- Funzione: crea grob con titolo + tabella ---
+make_table_grob <- function(title_text, df_block) {
+  # tema semplice e compatto
+  tg <- tableGrob(
+    df_block,
+    rows = NULL,
+    theme = ttheme_minimal(
+      core = list(fg_params = list(cex = 0.75, fontface = 1)),
+      colhead = list(fg_params = list(cex = 0.85, fontface = 2))
+    )
+  )
+  title_grob <- grid::textGrob(title_text, gp = grid::gpar(fontface = "bold", cex = 1.2))
+  gridExtra::arrangeGrob(
+    title_grob, tg,
+    ncol = 1,
+    heights = grid::unit.c(grid::grobHeight(title_grob) + grid::unit(6, "mm"), grid::unit(1, "null"))
+  )
 }
 
-# --- Funzione: crea e disegna le tabelle per un topic nel notebook ---
-draw_topic_tables <- function(topic_name, data, max_rows_per_block = 40) {
-  tab <- data %>%
-    filter(topic == topic_name) %>%
-    select(questionid, datavaluetype, datavalueunit) %>%
-    arrange(questionid, datavaluetype, datavalueunit)
-
+# --- Disegno nel notebook e salvataggio su file (uno per topic/parte) ---
+for (tp in topics) {
+  tab <- df_clean[df_clean$topic == tp, c("questionid", "datavaluetype", "datavalueunit"), drop = FALSE]
+  
   if (nrow(tab) == 0) {
-    grid.newpage()
-    grid.draw(tableGrob(
-      data.frame(Messaggio = sprintf("Nessuna combinazione per topic: %s", topic_name)),
-      rows = NULL
-    ))
-    return(invisible(NULL))
+    msg <- sprintf("Nessuna combinazione per topic: %s", tp)
+    grob <- make_table_grob(msg, data.frame(Messaggio = msg))
+    
+    # mostra nel notebook
+    grid::grid.newpage(); grid::grid.draw(grob)
+    
+    # salva
+    out_path <- file.path(OUTPUT_DIR, paste0("topic-", slugify(tp), ".", IMG_EXT))
+    if (IMG_EXT == "png") {
+      png(out_path, width = WIDTH, height = HEIGHT, res = DPI); grid::grid.draw(grob); dev.off()
+    } else {
+      jpeg(out_path, width = WIDTH, height = HEIGHT, quality = 95); grid::grid.draw(grob); dev.off()
+    }
+    next
   }
 
-  # spezza in blocchi se lungo
-  blocks <- split(tab, ceiling(seq_len(nrow(tab)) / max_rows_per_block))
+  # split in blocchi
+  idx <- ceiling(seq_len(nrow(tab)) / MAX_ROWS_PER_BLOCK)
+  blocks <- split(tab, idx)
 
   for (i in seq_along(blocks)) {
-    sub <- blocks[[i]]
-    tg <- tableGrob(
-      sub,
-      rows = NULL,
-      theme = ttheme_minimal(
-        core = list(fg_params = list(cex = 0.75)),
-        colhead = list(fg_params = list(fontface = "bold", cex = 0.8))
-      )
-    )
-
-    title_text <- if (length(blocks) == 1) {
-      sprintf("Topic: %s — datavaluetype e datavalueunit per QuestionID", topic_name)
+    title <- if (length(blocks) == 1) {
+      sprintf("Topic: %s — datavaluetype e datavalueunit per QuestionID", tp)
     } else {
-      sprintf("Topic: %s — datavaluetype e datavalueunit per QuestionID (Parte %d/%d)",
-              topic_name, i, length(blocks))
+      sprintf("Topic: %s — datavaluetype e datavalueunit per QuestionID (Parte %d/%d)", tp, i, length(blocks))
     }
+    grob <- make_table_grob(title, blocks[[i]])
 
-    title <- textGrob(title_text, gp = gpar(fontface = "bold", cex = 1))
-    padding <- unit(5, "mm")
-    g <- gtable_add_rows(tg, heights = grobHeight(title) + padding, pos = 0)
-    g <- gtable_add_grob(g, title, t = 1, l = 1, r = ncol(g))
+    # mostra nel notebook
+    grid::grid.newpage(); grid::grid.draw(grob)
 
-    grid.newpage()
-    grid.draw(g)
+    # salva file
+    suff <- if (length(blocks) == 1) "" else sprintf("-part-%02d", i)
+    out_path <- file.path(OUTPUT_DIR, paste0("topic-", slugify(tp), suff, ".", IMG_EXT))
+    if (IMG_EXT == "png") {
+      png(out_path, width = WIDTH, height = HEIGHT, res = DPI); grid::grid.draw(grob); dev.off()
+    } else {
+      jpeg(out_path, width = WIDTH, height = HEIGHT, quality = 95); grid::grid.draw(grob); dev.off()
+    }
   }
-}
-
-# --- Disegna tutte le tabelle nel notebook (una "pagina" per topic/blocco) ---
-for (tp in topics) {
-  draw_topic_tables(tp, df_clean, max_rows_per_block = MAX_ROWS_PER_BLOCK)
 }
 ```
 

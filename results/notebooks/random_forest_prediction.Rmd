@@ -96,9 +96,6 @@ varImpPlot(rf_model)
 Questo ci dice che:
 
 -   I gruppi etnici non sono separabili in modo netto solo con le variabili usate.
-
-<!-- -->
-
 -   Probabilmente alcuni gruppi hanno pattern simili → il modello li confonde.
 
 ## Confusion Matrix

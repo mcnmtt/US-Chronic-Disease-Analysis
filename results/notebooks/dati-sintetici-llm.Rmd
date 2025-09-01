@@ -1,0 +1,118 @@
+---
+title: "Dati Sintetici con LLM"
+output: html_notebook
+---
+
+```{r}
+# ============================================================
+# Script R: Confronto Statistiche Dataset Originale vs Sintetico
+# ============================================================
+
+# --- Parametri modificabili ---
+path_original <- "diabetes_subdataset.csv"
+path_synthetic <- "diabetes_subdataset_imputed.csv"
+
+strat_filter <- "Overall"   # Filtra stratificationcategory1
+years_keep <- NULL          # es. c(2015,2016), altrimenti NULL
+types_keep <- c("Crude Prevalence", "Age-adjusted Prevalence", "Crude Rate")
+
+output_file <- "confronto_statistiche.jpg"
+
+# --- Librerie ---
+library(tidyverse)
+library(readr)
+library(janitor)
+
+# --- Funzione di pulizia ---
+clean_data <- function(path, origine) {
+  df <- read_csv(path, show_col_types = FALSE) %>%
+    clean_names() %>%
+    filter(locationabbr != "US") %>%
+    filter(stratificationcategory1 == strat_filter) %>%
+    mutate(
+      datavalue = suppressWarnings(parse_number(as.character(datavalue))),
+      origine = origine,
+      datavaluetype = str_trim(str_to_title(datavaluetype))
+    ) %>%
+    filter(!is.na(datavalue))
+  
+  if (!is.null(years_keep)) {
+    df <- df %>% filter(yearstart %in% years_keep)
+  }
+  return(df)
+}
+
+# --- Caricamento dati ---
+df_orig <- clean_data(path_original, "Originale")
+df_synth <- clean_data(path_synthetic, "Sintetico")
+
+# --- Unione dataset ---
+df_all <- bind_rows(df_orig, df_synth)
+
+# --- Selezione tipi di interesse ---
+if (!"Age-Adjusted Prevalence" %in% unique(df_all$datavaluetype) &&
+    "Age-Adjusted Rate" %in% unique(df_all$datavaluetype)) {
+  types_keep <- c("Crude Prevalence", "Age-Adjusted Rate", "Crude Rate")
+}
+df_all <- df_all %>% filter(datavaluetype %in% types_keep)
+
+# --- Calcolo statistiche ---
+stats_df <- df_all %>%
+  group_by(origine, datavaluetype, stratificationcategory1, yearstart,
+           across(matches("questionid", ignore.case = TRUE), .names = "questionid")) %>%
+  summarise(
+    n = n(),
+    mean = mean(datavalue, na.rm = TRUE),
+    median = median(datavalue, na.rm = TRUE),
+    sd = sd(datavalue, na.rm = TRUE),
+    min = min(datavalue, na.rm = TRUE),
+    q25 = quantile(datavalue, 0.25, na.rm = TRUE),
+    q75 = quantile(datavalue, 0.75, na.rm = TRUE),
+    max = max(datavalue, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# --- Reshape in long format ---
+stats_long <- stats_df %>%
+  pivot_longer(
+    cols = c("max","mean","median","sd","min","q25","q75"),
+    names_to = "metrica", values_to = "valore"
+  ) %>%
+  mutate(metrica = factor(metrica, levels = c("max","mean","median","sd","min","q25","q75")))
+
+# --- Verifiche a console ---
+print("Head dataframe statistiche:")
+print(head(stats_long))
+print("Livelli datavaluetype usati:")
+print(unique(stats_long$datavaluetype))
+print("Numero stati unici:")
+print(length(unique(df_all$locationabbr)))
+
+# --- Plot ---
+facet_formula <- if ("questionid" %in% colnames(stats_long)) {
+  as.formula("~ datavaluetype + questionid")
+} else {
+  as.formula("~ datavaluetype")
+}
+
+p <- ggplot(stats_long, aes(x = metrica, y = valore, group = origine, colour = origine)) +
+  geom_line() +
+  geom_point(size = 2) +
+  facet_wrap(facet_formula, scales = "free_y") +
+  labs(
+    title = "Confronto Statistiche: Dataset Originale vs Sintetico",
+    subtitle = paste("Stratification:", strat_filter),
+    x = "Metrica Statistica",
+    y = "Valore",
+    colour = "Origine Dato"
+  ) +
+  scale_colour_manual(values = c("Originale" = "red", "Sintetico" = "blue")) +
+  theme_minimal(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.border = element_rect(colour = "grey80", fill = NA)
+  )
+
+# --- Salvataggio output ---
+ggsave(output_file, p, width = 16, height = 9, dpi = 300)
+```
