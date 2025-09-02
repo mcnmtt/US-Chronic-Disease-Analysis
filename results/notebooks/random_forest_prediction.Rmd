@@ -31,39 +31,33 @@ df_filtered <- df %>%
 ```
 
 ```{r}
-library(dplyr)
-library(randomForest)
+library(dplyr)         # gestione dati
+library(randomForest)  # random forest
 
-# parto dal dataset già filtrato sui topic (df_filtered)
-# creo una versione pulita con target e predittori
 df_sup <- df_filtered %>%
-  filter(stratificationcategory1 == "Race/Ethnicity") %>%
+  filter(stratificationcategory1 == "Race/Ethnicity") %>%                    # tiene solo race/ethnicity
   mutate(
-    datavalue_num = suppressWarnings(as.numeric(gsub(",", ".", datavalue, fixed = TRUE))),
-    stratification1 = factor(stratification1)  # target come fattore
+    datavalue_num = suppressWarnings(as.numeric(gsub(",", ".", datavalue, fixed = TRUE))), # converte valori numerici
+    stratification1 = factor(stratification1)                               # target come fattore
   ) %>%
-  select(stratification1, topic, questionid, datavaluetypeid, datavalueunit, datavalue_num)
+  select(stratification1, topic, questionid, datavaluetypeid, datavalueunit, datavalue_num) # variabili utili
 
-# Codifico variabili categoriche come fattori
 df_sup <- df_sup %>%
-  mutate(
+  mutate(                                                                   # codifica categoriche
     topic = factor(topic),
     questionid = factor(questionid),
     datavaluetypeid = factor(datavaluetypeid),
     datavalueunit = factor(datavalueunit)
   )
 
-# Rimuovo eventuali NA
-df_sup <- na.omit(df_sup)
+df_sup <- na.omit(df_sup)                                                   # rimuove NA
 
-# Split in training (70%) e test (30%)
 set.seed(123)
-train_idx <- sample(seq_len(nrow(df_sup)), size = 0.7 * nrow(df_sup))
+train_idx <- sample(seq_len(nrow(df_sup)), size = 0.7 * nrow(df_sup))       # split 70/30
 train <- df_sup[train_idx, ]
 test  <- df_sup[-train_idx, ]
 
-# Random Forest supervisionato
-rf_model <- randomForest(
+rf_model <- randomForest(                                                   # addestra random forest
   stratification1 ~ .,
   data = train,
   ntree = 300,
@@ -71,18 +65,16 @@ rf_model <- randomForest(
   importance = TRUE
 )
 
-print(rf_model)
+print(rf_model)                                                             # stampa modello
 
-# Predizioni sul test
-pred <- predict(rf_model, newdata = test)
+pred <- predict(rf_model, newdata = test)                                   # predizioni test
 
-# Accuracy
-acc <- mean(pred == test$stratification1)
+acc <- mean(pred == test$stratification1)                                   # accuracy
 cat("Accuracy sul test set:", round(acc * 100, 2), "%\n")
 
-# Importanza delle variabili
-importance(rf_model)
-varImpPlot(rf_model)
+importance(rf_model)                                                        # importanza variabili
+varImpPlot(rf_model)                                                        # grafico importanza
+
 ```
 
 # Interpretazione dei risultati
