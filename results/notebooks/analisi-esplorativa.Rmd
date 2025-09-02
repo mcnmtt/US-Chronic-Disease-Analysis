@@ -84,7 +84,7 @@ par(mar = c(12, 6, 4, 2) + 0.1)  # spazio per etichette lunghe
 
 barplot(
   counts_matrix,
-  main = "Numero di record per QuestionID",
+  main = "",
   ylab = "Numero di record",
   col = c("blue", "red"),
   border = "black",
