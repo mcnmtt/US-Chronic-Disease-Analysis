@@ -14,45 +14,44 @@ dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
 df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"))  
 
 df_filtered <- df %>%   
-  filter(topic %in% c("Tobacco", "Cardiovascular Disease")) 
+  filter(topic %in% c("Diabetes", "Cardiovascular Disease")) 
 ```
 
 ```{r}
-library(dplyr)
-library(tidyr) 
-library(corrplot)
+library(dplyr)                                              
+library(tidyr)                                            
+library(corrplot)                                            # grafico di correlazione
 
-mean_values <- df_filtered %>%
-  filter(datavaluetype == "Age-adjusted Prevalence",
-         stratificationcategory1 == "Overall",
-         locationabbr != "US",
-         !is.na(datavalue)) %>%
-  mutate(datavalue = as.numeric(datavalue)) %>%
-  group_by(questionid, locationabbr) %>%
-  summarise(mean_value = mean(datavalue, na.rm = TRUE), .groups = "drop")
+mean_values <- df_filtered %>%                               # parte dal dataframe filtrato
+  filter(datavaluetype == "Age-adjusted Prevalence",         # seleziona il tipo di valore
+         stratificationcategory1 == "Overall",               # tiene solo overall
+         locationabbr != "US",                               # esclude totale usa
+         !is.na(datavalue)) %>%                              # rimuove valori mancanti
+  mutate(datavalue = as.numeric(datavalue)) %>%              # converte datavalue in numerico
+  group_by(questionid, locationabbr) %>%                     # raggruppa per domanda e stato
+  summarise(mean_value = mean(datavalue, na.rm = TRUE), .groups = "drop")  # calcola media per gruppo
 
-mean_wide <- mean_values %>%
-  pivot_wider(names_from = questionid, values_from = mean_value)
+mean_wide <- mean_values %>%                                 # prepara formato wide
+  pivot_wider(names_from = questionid, values_from = mean_value)  # colonne per questionid con media
 
-esclusi <- setdiff(unique(df$questionid),unique(mean_values$questionid))
+esclusi <- setdiff(unique(df$questionid), unique(mean_values$questionid))  # questionid assenti nella media
 
-print(esclusi)
+print(esclusi)                                               # stampa la lista degli esclusi
 
-# Rimuovi la colonna con i nomi degli stati (locationabbr) per calcolare la correlazione solo sui numeri
-df_numeric <- mean_wide %>%
-  select(where(is.numeric))
+df_numeric <- mean_wide %>%                                  # prepara dati numerici per correlazione
+  select(where(is.numeric))                                  # seleziona solo colonne numeriche
 
-# Calcolo matrice di correlazione
-correlation_matrix <- cor(df_numeric, use = "pairwise.complete.obs", method = "pearson")
+correlation_matrix <- cor(df_numeric,                        # calcola matrice di correlazione
+                          use = "pairwise.complete.obs",     # usa coppie complete
+                          method = "pearson")                # coefficiente di pearson
 
-# Visualizzazione con corrplot
-corrplot(correlation_matrix,
-         method = "color",       # celle colorate
-         type = "upper",         # mostra solo triangolo superiore
-         order = "hclust",       # ordina le variabili per similarità
-         addCoef.col = "black",  # mostra i numeri della correlazione
-         tl.col = "black",       # colore dei nomi delle variabili
-         tl.srt = 45,            # rotazione etichette
-         diag = FALSE)           # non mostra la diagonale
+corrplot(correlation_matrix,                                 # disegna la matrice di correlazione
+         method = "color",                                   # celle colorate
+         type = "upper",                                     # triangolo superiore
+         order = "hclust",                                   # ordina per similarità
+         addCoef.col = "black",                              # mostra coefficienti in nero
+         tl.col = "black",                                   # colore etichette
+         tl.srt = 45,                                        # rotazione etichette
+         diag = FALSE)                                       # nasconde la diagonale
 
 ```

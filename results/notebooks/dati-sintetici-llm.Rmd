@@ -4,115 +4,100 @@ output: html_notebook
 ---
 
 ```{r}
-# ============================================================
-# Script R: Confronto Statistiche Dataset Originale vs Sintetico
-# ============================================================
+path_original <- "diabetes_subdataset.csv"                  
+path_synthetic <- "diabetes_subdataset_imputed.csv"       
+strat_filter <- "Overall"                                      # filtro per stratificationcategory1
+years_keep <- NULL                                             # anni da mantenere o NULL per tutti
+types_keep <- c("Crude Prevalence", "Age-adjusted Prevalence", "Crude Rate")  # tipi di metrica da usare
 
-# --- Parametri modificabili ---
-path_original <- "diabetes_subdataset.csv"
-path_synthetic <- "diabetes_subdataset_imputed.csv"
+output_file <- "confronto_statistiche.jpg"                     # nome file di output del grafico
 
-strat_filter <- "Overall"   # Filtra stratificationcategory1
-years_keep <- NULL          # es. c(2015,2016), altrimenti NULL
-types_keep <- c("Crude Prevalence", "Age-adjusted Prevalence", "Crude Rate")
+library(tidyverse)                                             # carica dplyr, ggplot2, readr, tidyr, ecc.
+library(readr)                                                 # funzioni di lettura csv
+library(janitor)                                               # clean_names per normalizzare i nomi
 
-output_file <- "confronto_statistiche.jpg"
-
-# --- Librerie ---
-library(tidyverse)
-library(readr)
-library(janitor)
-
-# --- Funzione di pulizia ---
-clean_data <- function(path, origine) {
-  df <- read_csv(path, show_col_types = FALSE) %>%
-    clean_names() %>%
-    filter(locationabbr != "US") %>%
-    filter(stratificationcategory1 == strat_filter) %>%
+clean_data <- function(path, origine) {                        # funzione di pulizia e standardizzazione
+  df <- read_csv(path, show_col_types = FALSE) %>%             # legge il csv senza stampare i tipi
+    clean_names() %>%                                          # porta i nomi colonna in snake_case
+    filter(locationabbr != "US") %>%                           # esclude il totale usa
+    filter(stratificationcategory1 == strat_filter) %>%        # applica filtro sulla stratificazione
     mutate(
-      datavalue = suppressWarnings(parse_number(as.character(datavalue))),
-      origine = origine,
-      datavaluetype = str_trim(str_to_title(datavaluetype))
+      datavalue = suppressWarnings(parse_number(as.character(datavalue))),  # rende datavalue numerico
+      origine = origine,                                       # aggiunge etichetta origine (originale/sintetico)
+      datavaluetype = str_trim(str_to_title(datavaluetype))    # normalizza datavaluetype con maiuscole
     ) %>%
-    filter(!is.na(datavalue))
+    filter(!is.na(datavalue))                                  # rimuove righe senza valore numerico
   
-  if (!is.null(years_keep)) {
-    df <- df %>% filter(yearstart %in% years_keep)
+  if (!is.null(years_keep)) {                                  # applica filtro sugli anni se definito
+    df <- df %>% filter(yearstart %in% years_keep)             # tiene solo gli anni richiesti
   }
-  return(df)
+  return(df)                                                   # ritorna il dataframe pulito
 }
 
-# --- Caricamento dati ---
-df_orig <- clean_data(path_original, "Originale")
-df_synth <- clean_data(path_synthetic, "Sintetico")
+df_orig <- clean_data(path_original, "Originale")              # prepara dataset originale
+df_synth <- clean_data(path_synthetic, "Sintetico")            # prepara dataset sintetico
 
-# --- Unione dataset ---
-df_all <- bind_rows(df_orig, df_synth)
+df_all <- bind_rows(df_orig, df_synth)                         # unisce i due dataset
 
-# --- Selezione tipi di interesse ---
-if (!"Age-Adjusted Prevalence" %in% unique(df_all$datavaluetype) &&
-    "Age-Adjusted Rate" %in% unique(df_all$datavaluetype)) {
-  types_keep <- c("Crude Prevalence", "Age-Adjusted Rate", "Crude Rate")
+if (!"Age-Adjusted Prevalence" %in% unique(df_all$datavaluetype) &&  # gestisce naming alternativo
+    "Age-Adjusted Rate" %in% unique(df_all$datavaluetype)) {   # se manca prevalence ma c'è rate
+  types_keep <- c("Crude Prevalence", "Age-Adjusted Rate", "Crude Rate")  # aggiorna elenco tipi
 }
-df_all <- df_all %>% filter(datavaluetype %in% types_keep)
+df_all <- df_all %>% filter(datavaluetype %in% types_keep)     # filtra sui tipi selezionati
 
-# --- Calcolo statistiche ---
-stats_df <- df_all %>%
-  group_by(origine, datavaluetype, stratificationcategory1, yearstart,
-           across(matches("questionid", ignore.case = TRUE), .names = "questionid")) %>%
+stats_df <- df_all %>%                                         # calcola statistiche descrittive
+  group_by(origine, datavaluetype, stratificationcategory1, yearstart,  # raggruppa per chiavi principali
+           across(matches("questionid", ignore.case = TRUE), .names = "questionid")) %>%  # include questionid se presente
   summarise(
-    n = n(),
-    mean = mean(datavalue, na.rm = TRUE),
-    median = median(datavalue, na.rm = TRUE),
-    sd = sd(datavalue, na.rm = TRUE),
-    min = min(datavalue, na.rm = TRUE),
-    q25 = quantile(datavalue, 0.25, na.rm = TRUE),
-    q75 = quantile(datavalue, 0.75, na.rm = TRUE),
-    max = max(datavalue, na.rm = TRUE),
-    .groups = "drop"
+    n = n(),                                                   # numerosità
+    mean = mean(datavalue, na.rm = TRUE),                      # media
+    median = median(datavalue, na.rm = TRUE),                  # mediana
+    sd = sd(datavalue, na.rm = TRUE),                          # deviazione standard
+    min = min(datavalue, na.rm = TRUE),                        # minimo
+    q25 = quantile(datavalue, 0.25, na.rm = TRUE),             # primo quartile
+    q75 = quantile(datavalue, 0.75, na.rm = TRUE),             # terzo quartile
+    max = max(datavalue, na.rm = TRUE),                        # massimo
+    .groups = "drop"                                           # esce dal raggruppamento
   )
 
-# --- Reshape in long format ---
-stats_long <- stats_df %>%
+stats_long <- stats_df %>%                                     # porta in formato long per il plot
   pivot_longer(
-    cols = c("max","mean","median","sd","min","q25","q75"),
-    names_to = "metrica", values_to = "valore"
+    cols = c("max","mean","median","sd","min","q25","q75"),   # metriche da fondere
+    names_to = "metrica", values_to = "valore"                 # nomi colonne output
   ) %>%
-  mutate(metrica = factor(metrica, levels = c("max","mean","median","sd","min","q25","q75")))
+  mutate(metrica = factor(metrica, levels = c("max","mean","median","sd","min","q25","q75")))  # ordina metriche
 
-# --- Verifiche a console ---
-print("Head dataframe statistiche:")
-print(head(stats_long))
-print("Livelli datavaluetype usati:")
-print(unique(stats_long$datavaluetype))
-print("Numero stati unici:")
-print(length(unique(df_all$locationabbr)))
+print("head dataframe statistiche:")                           # messaggio diagnostico
+print(head(stats_long))                                        # anteprima delle statistiche
+print("livelli datavaluetype usati:")                          # messaggio diagnostico
+print(unique(stats_long$datavaluetype))                        # elenco tipi usati
+print("numero stati unici:")                                   # messaggio diagnostico
+print(length(unique(df_all$locationabbr)))                     # conta stati unici
 
-# --- Plot ---
-facet_formula <- if ("questionid" %in% colnames(stats_long)) {
-  as.formula("~ datavaluetype + questionid")
+facet_formula <- if ("questionid" %in% colnames(stats_long)) { # decide faceting in base a questionid
+  as.formula("~ datavaluetype + questionid")                   # facet per tipo e domanda
 } else {
-  as.formula("~ datavaluetype")
+  as.formula("~ datavaluetype")                                # facet solo per tipo
 }
 
-p <- ggplot(stats_long, aes(x = metrica, y = valore, group = origine, colour = origine)) +
-  geom_line() +
-  geom_point(size = 2) +
-  facet_wrap(facet_formula, scales = "free_y") +
+p <- ggplot(stats_long, aes(x = metrica, y = valore, group = origine, colour = origine)) +  # setup ggplot
+  geom_line() +                                               # linee per collegare le metriche
+  geom_point(size = 2) +                                      # punti su ogni metrica
+  facet_wrap(facet_formula, scales = "free_y") +              # facet dinamico con scala y libera
   labs(
-    title = "Confronto Statistiche: Dataset Originale vs Sintetico",
-    subtitle = paste("Stratification:", strat_filter),
-    x = "Metrica Statistica",
-    y = "Valore",
-    colour = "Origine Dato"
+    title = "confronto statistiche: dataset originale vs sintetico",  # titolo grafico
+    subtitle = paste("stratification:", strat_filter),         # sottotitolo con filtro usato
+    x = "metrica statistica",                                  # etichetta asse x
+    y = "valore",                                              # etichetta asse y
+    colour = "origine dato"                                    # legenda colori
   ) +
-  scale_colour_manual(values = c("Originale" = "red", "Sintetico" = "blue")) +
-  theme_minimal(base_size = 14) +
+  scale_colour_manual(values = c("Originale" = "red", "Sintetico" = "blue")) +  # colori fissi
+  theme_minimal(base_size = 14) +                              # tema minimale
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    panel.border = element_rect(colour = "grey80", fill = NA)
+    axis.text.x = element_text(angle = 45, hjust = 1),         # ruota etichette x
+    panel.border = element_rect(colour = "grey80", fill = NA)  # bordo pannelli leggero
   )
 
-# --- Salvataggio output ---
-ggsave(output_file, p, width = 16, height = 9, dpi = 300)
+ggsave(output_file, p, width = 16, height = 9, dpi = 300)      # salva il grafico su file
+
 ```
