@@ -99,34 +99,25 @@ clustered %>%
 # Percentuali per stratification (solo Race/Ethnicity) dentro ciascun cluster
 
 ```{r}
-library(dplyr)
-library(tidyr)
+library(dplyr)   # gestione dati
+library(tidyr)   # funzioni di reshaping
 
-# calcolo delle percentuali per ogni cluster e stratification
 cluster_strat_pct <- clustered %>%
-  # filtra solo i record con categoria race/ethnicity ed esclude cluster mancanti
-  filter(stratificationcategory1 == "Race/Ethnicity", !is.na(cluster)) %>%
-  # raggruppa per topic, questionid, datavaluetypeid e cluster
-  group_by(topic, questionid, datavaluetypeid, cluster) %>%
-  # calcola la dimensione totale del cluster
-  mutate(cluster_total = n()) %>%
-  # raggruppa ulteriormente per stratification1
-  group_by(topic, questionid, datavaluetypeid, cluster, stratification1) %>%
-  # calcola il numero di elementi per ogni combinazione
+  filter(stratificationcategory1 == "Race/Ethnicity", !is.na(cluster)) %>% # tiene solo race/ethnicity e cluster validi
+  group_by(topic, questionid, datavaluetypeid, cluster) %>%                # raggruppa per cluster e variabili base
+  mutate(cluster_total = n()) %>%                                          # totale righe per cluster
+  group_by(topic, questionid, datavaluetypeid, cluster, stratification1) %>% # aggiunge stratificazione
   summarise(
-    n = n(),
-    cluster_total = dplyr::first(cluster_total),
+    n = n(),                                                               # conta righe per gruppo
+    cluster_total = dplyr::first(cluster_total),                           # riporta totale cluster
     .groups = "drop_last"
   ) %>%
-  # calcola la percentuale di ciascuna categoria sul totale del cluster
-  mutate(pct = 100 * n / cluster_total) %>%
-  # rimuove i raggruppamenti
-  ungroup() %>%
-  # ordina i risultati
-  arrange(topic, questionid, datavaluetypeid, cluster, desc(pct))
+  mutate(pct = 100 * n / cluster_total) %>%                                # percentuale sul cluster
+  ungroup() %>%                                                            # toglie il raggruppamento
+  arrange(topic, questionid, datavaluetypeid, cluster, desc(pct))          # ordina in modo leggibile
 
-# anteprima delle prime 20 righe della tabella finale
-cluster_strat_pct %>% head(20)
+cluster_strat_pct %>% head(20)  # anteprima prime 20 righe
+
 
 ```
 
