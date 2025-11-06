@@ -1,0 +1,142 @@
+---
+title: "Cluster-Metrics"
+output: html_document
+---
+
+# Valutazione bontà dei cluster
+
+Vogliamo valutare la qualità dei cluster che abbiamo osservato, osservando le metriche **WCSS** e **BCSS** e calcolando il k ottimale tramite l'**elbow method**.
+
+Filtro su un topic specifico e rimuovo valori nulli.
+
+*ALC3_0: Binge drinking frequency among adults aged \>= 18 years who binge drink*
+
+```{r}
+library(dplyr)
+
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
+
+df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"))
+
+df_filtered <- df %>%
+  filter(topic %in% c("Alcohol"))
+
+df_k <- df_filtered %>%
+  mutate(
+    datavalue_num = suppressWarnings(as.numeric(gsub(",", ".", datavalue, fixed = TRUE))),
+    .row = dplyr::row_number()
+  )
+
+```
+
+Filtro per un fenomeno preciso (combinazione di topic, question, value type, stratification category)
+
+```{r}
+
+# seleziona la combinazione specifica
+tp  <- "Alcohol"
+qid <- "ALC3_0"
+dvt <- "Mean"
+sc1 <- "Race/Ethnicity"
+
+df_single <- df_k %>%
+  filter(
+    topic == tp,
+    questionid == qid,
+    datavaluetypeid == dvt,
+    stratificationcategory1 == sc1,
+    !is.na(datavalue_num)
+  )
+
+print("Numero osservazioni:")
+nrow(df_single)
+```
+
+Calcolo k-mean, visualizzazione centroidi e metriche WCSS, BCSS e indice Calinski-Harabasz
+
+```{r}
+set.seed(9)
+km_single <- kmeans(df_single$datavalue_num, centers = 4, nstart = 25)
+
+df_single <- df_single %>%
+  mutate(cluster = km_single$cluster)
+
+print("Centroidi:")
+km_single$centers
+
+wcss <- km_single$tot.withinss
+print("WCSS")
+wcss
+
+bcss <- km_single$betweenss
+print("BCSS:")
+bcss
+
+ch_index <- bcss / wcss
+print("Calinski-Harabasz:")
+ch_index
+```
+
+Visualizzazione grafica raggruppamento punti.
+
+```{r}
+library(ggplot2)
+
+ggplot(df_single, aes(x = datavalue_num, y = .row, color = factor(cluster))) +
+  geom_point(size = 2, alpha = 0.7) +
+  labs(
+    title = paste("K-Means clustering -", tp, qid, dvt),
+    x = "Datavalue",
+    y = "Osservazioni",
+    color = "Cluster"
+  ) +
+  theme_minimal()
+
+```
+
+Visualizzazione WCSS per diversi k (Elbow method)
+
+```{r}
+set.seed(9)
+
+wcss_vals <- sapply(1:10, function(k){
+  kmeans(df_single$datavalue_num, centers = k, nstart = 25)$tot.withinss
+})
+
+plot(1:10, wcss_vals, type = "b", pch = 19,
+     xlab = "Numero di cluster (k)",
+     ylab = "WCSS totale",
+     main = "Metodo del gomito (Elbow Method)")
+
+abline(v = 4, col = "gray", lwd = 2, lty = 2)
+
+```
+
+Visualizzazione, ai fini della RQ, della distribuzione di etnie per cluster.
+
+```{r}
+
+cluster_ethnicity_pct <- df_single %>%
+  group_by(cluster, stratification1) %>%          # raggruppa per cluster + etnia
+  summarise(n = n(), .groups = "drop_last") %>%   # conta elementi
+  mutate(
+    cluster_total = sum(n),                       # totale elementi nel cluster
+    pct = 100 * n / cluster_total                 # percentuale
+  ) %>%
+  ungroup() %>%
+  arrange(cluster, desc(pct))
+
+cluster_ethnicity_pct
+
+ggplot(cluster_ethnicity_pct, aes(x = "", y = pct, fill = stratification1)) +
+  geom_col(width = 1) +
+  coord_polar(theta = "y") +
+  facet_wrap(~ cluster) +
+  labs(
+    title = paste("Composizione etnica per cluster -", tp, qid, dvt),
+    fill = "Etnia"
+  ) +
+  theme_void()
+
+
+```
