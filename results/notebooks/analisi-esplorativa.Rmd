@@ -141,7 +141,7 @@ print(p)                                                   # stampa il grafico
 library(gridExtra)                                         
 
 dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
-MAX_ROWS_PER_BLOCK <- 40                                      # numero massimo di righe per tabella
+MAX_ROWS_PER_BLOCK <- 200                                      # numero massimo di righe per tabella
 SHOW_TOPICS <- NULL                                           # elenco di topic da mostrare o NULL per tutti
 OUTPUT_DIR <- "tabelle_topic"                                 # cartella di output per le immagini
 IMG_EXT <- "png"                                              # estensione immagine di output
@@ -476,3 +476,162 @@ datatable(                                                     # mostra tabella 
   class = "display compact nowrap"                             # stile compatto e no wrap
 )
 ```
+
+# Analisi distribuzione di frequenza (Test del $\chi^2$)
+
+Data la distribuzione di frequenze dei valori osservati per il fenomeno *ALC3_0* con *datavaluetype* = "Mean" ci chiediamo:
+
+\
+**H0:** il fenomeno segue una distribuzione normale\
+**H1:** il fenomeno non segue un distribuzione normale\
+\
+Verifichiamo:
+
+```{r}
+library(dplyr)
+
+DATASET_PATH <- "u_s_chronic_disease_indicators_cdi.csv"
+
+vals <- read.csv(DATASET_PATH, na.strings = c("", "NA", "NULL", "null"), stringsAsFactors = FALSE) %>%
+  rename_all(tolower) %>%   # rende i nomi colonna minuscoli
+  filter(
+    questionid == "ALC3_0",
+    tolower(datavaluetype) == "mean"
+  ) %>%
+  mutate(datavalue = suppressWarnings(as.numeric(datavalue))) %>%
+  filter(!is.na(datavalue)) %>%
+  pull(datavalue)   # estrae solo la colonna come vettore
+
+
+vals   # stampa il vettore
+
+n <- length(vals)
+print("Grandezza campione")
+n
+
+m <- mean(vals)
+print("Mean")
+m
+
+s <- sd(vals)
+print("SD")
+s
+
+# utilizzando quantili determiniamo 5 intervalli Ii
+
+a <- numeric(4)
+for(i in 1:4)
+  a[i]<- qnorm(0.2*i, mean=m, sd=s)
+
+print("Valori intervalli")
+a
+```
+
+$I_1 = (-\infty, +3.573489),\space I_2 = [+3.573489, 4.019622),\space I_3 = [4.019622, 4.403888),\space I_4 = [4.403888, 4.850021),\space I_5 = [4.850021, +\infty)$
+
+Otteniamo così i 5 intervalli, ora visualiziamo le frequenze per ognuno.
+
+```{r}
+r <- 5
+nint <- numeric(r)
+nint[1] <- length(which(vals<a[1]))
+nint[2] <- length(which((vals>=a[1])&(vals<a[2])))
+nint[3] <- length(which((vals>=a[2])&(vals<a[3])))
+nint[4] <- length(which((vals>=a[3])&(vals<a[4])))
+nint[5] <- length(which(vals>=a[4]))
+
+("Frequenze per ogni intervallo")
+nint
+("Totale osservazioni")
+sum(nint)
+```
+
+Calcoliamo quindi l'indice $\chi^2$
+
+```{r}
+chi2 <- sum((nint - n*0.2)^2/(n*0.2))
+chi2
+```
+
+Poichè il numero di intervalli è r = 5 e k parametri della distribuzione normale, avremo
+
+**gradi di libertà** = r - k - 1 = 2.
+
+Impostiamo il livello di significatività $\alpha = 0.05$
+
+```{r}
+r <- 5
+k <- 2
+alpha <- 0.05
+right <- qchisq(alpha/2, df=r-k-1)
+right
+left <- qchisq(1-alpha/2, df=r-k-1)
+left
+
+```
+
+Essendo $\chi^2 = 3.102649$ quindi $0.05063562 < \chi^2 < 7.377759$ non possiamo rifiutare l'ipotesi nulla **H0**.
+
+Quindi il campione osservato **segue** una distribuzione normale.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(moments)
+
+# ---- statistiche principali ----
+media   <- mean(vals)
+mediana <- median(vals)
+moda    <- vals %>% table() %>% which.max() %>% names() %>% as.numeric()
+
+# ---- skewness & kurtosis ----
+skew_val  <- skewness(vals)
+kurt_val  <- kurtosis(vals)
+
+# ---- density calcolata e convertita in frequenza assoluta ----
+dens <- density(vals, adjust = 1.5)
+dens_df <- data.frame(
+  x = dens$x,
+  freq_ass = dens$y * length(vals)
+)
+
+# ---- plot ----
+ggplot(dens_df, aes(x = x, y = freq_ass)) +
+  geom_line(size = .7, color = "black") +
+  
+  geom_vline(aes(xintercept = media, colour = "Media"), size = .5) +
+  geom_vline(aes(xintercept = mediana, colour = "Mediana"), size = .5) +
+  geom_vline(aes(xintercept = moda, colour = "Moda"), size = .5) +
+
+  scale_colour_manual(values = c("Media" = "red", "Mediana" = "green", "Moda" = "purple")) +
+
+  annotate(
+    "text", 
+    x = min(dens_df$x),
+    y = max(dens_df$freq_ass, na.rm = TRUE) * 0.95,
+    label = paste0(
+      "Skewness = ", round(skew_val, .5), "\n",
+      "Curtosi = ", round(kurt_val, .5)
+    ),
+    hjust = 0, vjust = 1, size = 3.5, fontface = "bold"
+  ) +
+
+  labs(
+    title = "Distribuzione per ALC3_0, Mean",
+    x = "Valore",
+    y = "Frequenza assoluta",
+    colour = "Statistiche"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+$Mediana \approx_< Media < Moda$
+
+**Leggera asimmetria positiva** (coda leggermente più allungata a destra).
+
+**Moderatamente leptocurtica**, valori concentrati intorno alla media.
