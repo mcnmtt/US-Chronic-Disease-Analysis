@@ -371,50 +371,109 @@ freq_df <- freq_df %>%                                       # imposta fattori p
     datavaluetype = factor(datavaluetype, levels = unique(combo_stats$datavaluetype)) # ordina datavaluetype
   )
 
+# === calcolo statistiche per ogni combinazione (media, mediana, moda, varianza, sd) ===
+stats_df <- df %>%
+  semi_join(combo_stats, by = c("questionid","datavaluetype")) %>%
+  group_by(questionid, datavaluetype) %>%
+  summarise(
+    mean   = mean(datavalue, na.rm = TRUE),
+    median = median(datavalue, na.rm = TRUE),
+    mode   = as.numeric(names(which.max(table(datavalue)))),
+    var    = var(datavalue, na.rm = TRUE),
+    sd     = sd(datavalue, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    label_mean   = paste0("Media (µ=", round(mean, 2), ")"),
+    label_median = paste0("Mediana (med=", round(median, 2), ")"),
+    label_mode   = paste0("Moda (mod=", round(mode, 2), ")")
+  )
+
 num_combos <- nrow(combo_stats)                               # numero di combinazioni selezionate
 
 if (num_combos <= FACET_THRESHOLD) {                          # caso facet unico se poche combinazioni
-  p <- ggplot(freq_df, aes(x = datavalue, y = frequency)) +   # imposta mapping estetico
-    geom_col(fill = "blue", alpha = 0.7, width = 0.9) +       # colonne blu semi-trasparenti
-    facet_grid(datavaluetype ~ questionid, scales = "free_y") + # griglia per datavaluetype x questionid
-    labs(                                                     # etichette del grafico
+  p <- ggplot(freq_df, aes(x = datavalue, y = frequency)) +
+
+    geom_col(fill = "blue", alpha = 0.7, width = 0.9) +       
+
+    geom_vline(data = stats_df, aes(xintercept = mean,   color = label_mean),   linetype = "solid",   linewidth = 1) +
+    geom_vline(data = stats_df, aes(xintercept = median, color = label_median), linetype = "dashed",  linewidth = 1) +
+    geom_vline(data = stats_df, aes(xintercept = mode,   color = label_mode),   linetype = "dotdash", linewidth = 1) +
+
+    geom_text(data = stats_df, aes(x = mean,   y = Inf, label = paste0("µ=", round(mean, 2))),   vjust = -0.5, color = "red",   size = 3, fontface = "bold") +
+    geom_text(data = stats_df, aes(x = median, y = Inf, label = paste0("med=", round(median, 2))), vjust = -0.5, color = "black", size = 3, fontface = "bold") +
+    geom_text(data = stats_df, aes(x = mode,   y = Inf, label = paste0("mod=", round(mode, 2))),   vjust = -0.5, color = "green", size = 3, fontface = "bold") +
+
+    scale_color_manual(
+      name = "Statistiche",
+      values = c("red", "black", "green"),
+      breaks = c(stats_df$label_mean[1], stats_df$label_median[1], stats_df$label_mode[1]),
+      labels = c(stats_df$label_mean[1], stats_df$label_median[1], stats_df$label_mode[1])
+    ) +
+
+    facet_grid(datavaluetype ~ questionid, scales = "free_y") +
+    labs(
       title = "distribuzione di frequenza di datavalue per questionid × datavaluetype",
       x = "datavalue",
-      y = "frequenza"
+      y = "frequenza",
+      caption = "Legenda: µ = media | med = mediana | mod = moda | var = varianza | sd = deviazione standard"
     ) +
-    theme_minimal(base_size = 11) +                           # tema minimale
+    theme_minimal(base_size = 11) +
     theme(
-      strip.text = element_text(face = "bold"),               # etichette facet in grassetto
-      plot.title = element_text(face = "bold"),               # titolo in grassetto
-      panel.grid.minor = element_blank()                      # rimuove griglia minore
+      strip.text = element_text(face = "bold"),
+      plot.title = element_text(face = "bold"),
+      panel.grid.minor = element_blank()
     )
-  print(p)                                                    # stampa il grafico
-} else {                                                      # caso con molte combinazioni: stampa una per volta
-  combos <- combo_stats %>% select(questionid, datavaluetype) # estrae la lista delle combinazioni
-  for (i in seq_len(nrow(combos))) {                          # ciclo sulle combinazioni
-    qi  <- combos$questionid[i]                               # questionid corrente
-    dvt <- combos$datavaluetype[i]                            # datavaluetype corrente
 
-    sub <- freq_df %>%                                        # sottoinsieme dei dati per la combinazione
-      filter(questionid == qi, datavaluetype == dvt)          # filtra per combo corrente
+  print(p)
 
-    if (nrow(sub) == 0) next                                  # salta se non ci sono righe
+} else {  # === caso loop per combinazioni singole ===
+  combos <- combo_stats %>% select(questionid, datavaluetype)
 
-    p <- ggplot(sub, aes(x = datavalue, y = frequency)) +     # imposta mapping estetico
-      geom_col(fill = "blue", alpha = 0.7, width = 0.9) +     # colonne blu semi-trasparenti
-      labs(                                                   # etichette del grafico
+  for (i in seq_len(nrow(combos))) {
+    qi  <- combos$questionid[i]
+    dvt <- combos$datavaluetype[i]
+
+    sub <- freq_df %>% filter(questionid == qi, datavaluetype == dvt)
+    sub_stats <- stats_df %>% filter(questionid == qi, datavaluetype == dvt)
+
+    if (nrow(sub) == 0) next
+
+    p <- ggplot(sub, aes(x = datavalue, y = frequency)) +
+      geom_col(fill = "blue", alpha = 0.7, width = 0.9) +
+
+      geom_vline(data = sub_stats, aes(xintercept = mean,   color = label_mean),   linetype = "solid",   linewidth = 1) +
+      geom_vline(data = sub_stats, aes(xintercept = median, color = label_median), linetype = "dashed",  linewidth = 1) +
+      geom_vline(data = sub_stats, aes(xintercept = mode,   color = label_mode),   linetype = "dotdash", linewidth = 1) +
+
+      geom_text(data = sub_stats, aes(x = mean,   y = Inf, label = paste0("µ=", round(mean, 2))),   vjust = -0.5, color = "red",   size = 3, fontface = "bold") +
+      geom_text(data = sub_stats, aes(x = median, y = Inf, label = paste0("med=", round(median, 2))), vjust = -0.5, color = "black", size = 3, fontface = "bold") +
+      geom_text(data = sub_stats, aes(x = mode,   y = Inf, label = paste0("mod=", round(mode, 2))),   vjust = -0.5, color = "green", size = 3, fontface = "bold") +
+
+      scale_color_manual(
+        name = "Statistiche",
+        values = c("red", "black", "green"),
+        breaks = c(sub_stats$label_mean, sub_stats$label_median, sub_stats$label_mode),
+        labels = c(sub_stats$label_mean, sub_stats$label_median, sub_stats$label_mode)
+      ) +
+
+      labs(
         title = paste("distribuzione di frequenza —", qi, "—", dvt),
         x = "datavalue",
-        y = "frequenza"
+        y = "frequenza",
+        caption = paste0("Var = ", round(sub_stats$var, 3), " | SD = ", round(sub_stats$sd, 3))
       ) +
-      theme_minimal(base_size = 12) +                         # tema minimale
+      theme_minimal(base_size = 12) +
       theme(
-        plot.title = element_text(face = "bold"),             # titolo in grassetto
-        panel.grid.minor = element_blank()                    # rimuove griglia minore
+        plot.title = element_text(face = "bold"),
+        panel.grid.minor = element_blank()
       )
-    print(p)                                                  # stampa il grafico
+
+    print(p)
   }
 }
+
+
 ```
 
 # Moda dati qualitativi
