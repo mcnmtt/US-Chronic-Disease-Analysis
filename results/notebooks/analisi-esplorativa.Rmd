@@ -694,3 +694,42 @@ $Mediana \approx_< Media < Moda$
 **Leggera asimmetria positiva** (coda leggermente più allungata a destra).
 
 **Moderatamente leptocurtica**, valori concentrati intorno alla media.
+
+# P-value
+
+H₀ (ipotesi nulla): la media globale di prevalenza del diabete è uguale per maschi e femmine
+
+H_1 : le medie globali sono diverse
+
+```{r}
+library(dplyr)
+  
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"  
+
+df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"))  
+
+df_filtered <- df %>%   
+  filter(topic %in% c("Diabetes"))
+
+diab_gender <- df_filtered %>%                   
+  filter(questionid == "DIA1_1",
+         datavaluetypeid == "CrdRate",      
+         stratificationcategoryid1 == "GENDER",           
+         !is.na(datavalue))
+
+# ---- 4. Crea i due gruppi ----
+maschi <- diab_gender %>%
+  filter(stratification1 == "Male") %>%
+  pull(datavalue)
+
+femmine <- diab_gender %>%
+  filter(stratification1 == "Female") %>%
+  pull(datavalue)
+
+# ---- 5. Controlla che non siano vuoti ----
+cat("Maschi:", length(maschi), "osservazioni\n")
+cat("Femmine:", length(femmine), "osservazioni\n")
+
+# ---- AGGIUNGERE TEST PVALUE CON T-STUDENT -----
+
+```
