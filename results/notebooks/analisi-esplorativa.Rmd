@@ -697,39 +697,57 @@ $Mediana \approx_< Media < Moda$
 
 # P-value
 
-H₀ (ipotesi nulla): la media globale di prevalenza del diabete è uguale per maschi e femmine
-
-H_1 : le medie globali sono diverse
+**H₀:** La media del tasso di prevalenza del diabete nella popolazione maschile è uguale alla media del tasso di prevalenza del diabete nella popolazione femminile.\
+**H₁ :** La media del tasso di prevalenza del diabete nella popolazione maschile è diversa dalla media del tasso di prevalenza del diabete nella popolazione femminile.
 
 ```{r}
 library(dplyr)
-  
-dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"  
 
-df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"))  
+dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
 
-df_filtered <- df %>%   
-  filter(topic %in% c("Diabetes"))
+df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"))
 
-diab_gender <- df_filtered %>%                   
-  filter(questionid == "DIA1_1",
-         datavaluetypeid == "CrdRate",      
-         stratificationcategoryid1 == "GENDER",           
-         !is.na(datavalue))
+df_filtered <- df %>%
+  filter(topic == "Diabetes")
 
-# ---- 4. Crea i due gruppi ----
+diab_gender <- df_filtered %>%
+  filter(
+    questionid == "DIA1_1",
+    datavaluetypeid == "CrdRate",
+    stratificationcategoryid1 == "GENDER",
+    !is.na(datavalue)
+  )
+
 maschi <- diab_gender %>%
   filter(stratification1 == "Male") %>%
-  pull(datavalue)
+  pull(datavalue) %>%
+  as.numeric()
 
 femmine <- diab_gender %>%
   filter(stratification1 == "Female") %>%
-  pull(datavalue)
+  pull(datavalue) %>%
+  as.numeric()
 
-# ---- 5. Controlla che non siano vuoti ----
 cat("Maschi:", length(maschi), "osservazioni\n")
 cat("Femmine:", length(femmine), "osservazioni\n")
 
-# ---- AGGIUNGERE TEST PVALUE CON T-STUDENT -----
+t_test_result <- t.test(
+  maschi,
+  femmine,
+  alternative = "two.sided",
+  conf.level = 0.95
+)
+
+print(t_test_result)
 
 ```
+
+Il test t di Student evidenzia una differenza statisticamente significativa tra la media del tasso di prevalenza del diabete nella popolazione maschile e femminile.
+
+La media osservata nei maschi ($\bar{x}_{M} \approx 89.98$) risulta superiore rispetto a quella osservata nelle femmine ($\bar{x}_{F} \approx 77.79$).
+
+Il valore del \emph{p-value} ($4.863 \times 10^{-12}$) è ampiamente inferiore al livello di significatività $\alpha = 0.05$; pertanto si rifiuta l’ipotesi nulla di uguaglianza delle medie.
+
+L’intervallo di confidenza al 95% per la differenza tra le medie $[8.80,\; 15.57]$ non include lo zero, confermando la significatività statistica del risultato.
+
+I risultati indicano quindi una prevalenza media del diabete significativamente più elevata nella popolazione maschile rispetto a quella femminile.
