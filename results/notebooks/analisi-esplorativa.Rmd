@@ -697,8 +697,8 @@ $Mediana \approx_< Media < Moda$
 
 # P-value
 
-**H₀:** La media del tasso di prevalenza del diabete nella popolazione maschile è uguale alla media del tasso di prevalenza del diabete nella popolazione femminile.\
-**H₁ :** La media del tasso di prevalenza del diabete nella popolazione maschile è diversa dalla media del tasso di prevalenza del diabete nella popolazione femminile.
+**H₀:** La media del tasso di prevalenza del diabete nella popolazione maschile è significativamente simile alla media del tasso di prevalenza del diabete nella popolazione femminile.\
+**H₁ :** La media del tasso di prevalenza del diabete nella popolazione maschile è significativamente diversa dalla media del tasso di prevalenza del diabete nella popolazione femminile.
 
 ```{r}
 library(dplyr)
