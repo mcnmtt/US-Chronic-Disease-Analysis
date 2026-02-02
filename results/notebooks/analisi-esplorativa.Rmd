@@ -697,57 +697,123 @@ $Mediana \approx_< Media < Moda$
 
 # P-value
 
-**H₀:** La media del tasso di prevalenza del diabete nella popolazione maschile è significativamente simile alla media del tasso di prevalenza del diabete nella popolazione femminile.\
-**H₁ :** La media del tasso di prevalenza del diabete nella popolazione maschile è significativamente diversa dalla media del tasso di prevalenza del diabete nella popolazione femminile.
+```{r}
+library(dplyr)
+
+# Caricamento dataset
+cdi <- read.csv(
+  "u_s_chronic_disease_indicators_cdi.csv",
+  stringsAsFactors = FALSE
+)
+
+# Filtro e conversione a numerico
+diabetes_mortality <- cdi %>%
+  filter(
+    topic == "Diabetes",
+    questionid == "DIA1_1",
+    yearstart >= 2010 & yearend <= 2014,
+    stratificationcategory1 == "Overall",
+    datavaluetype == "Crude Rate"
+  ) %>%
+  mutate(datavalue = as.numeric(datavalue)) %>%
+  filter(!is.na(datavalue)) %>%
+  pull(datavalue)
+
+# Controllo rapido
+summary(diabetes_mortality)
+
+# Parametri del test
+mu0 <- 65.8
+alpha <- 0.05
+
+# Test di ipotesi monolaterale
+test_result <- t.test(
+  diabetes_mortality,
+  mu = mu0,
+  alternative = "greater",
+  conf.level = 1 - alpha
+)
+
+test_result
+
+
+```
+
+### Verifica delle ipotesi sulla mortalità per diabete
+
+L’obiettivo di sanità pubblica **Healthy People 2010** stabilisce come target una mortalità per diabete pari a **65.8 decessi per 100.000 abitanti**, considerando il diabete come causa primaria o contributiva di morte.
+
+Sono stati analizzati i dati relativi alla mortalità per diabete nel periodo **2010–2014**, limitandosi ai valori complessivi e ai **Crude Rate**, al fine di garantire la confrontabilità tra le osservazioni considerate.
+
+È stato quindi costruito un **test di verifica delle ipotesi monolaterale** con livello di significatività α=0.05, formulando le seguenti ipotesi:
+
+H0:μ≤65.8 H1:μ>65.8
+
+dove μ rappresenta la mortalità media per diabete osservata nel campione.
+
+Poiché la deviazione standard della popolazione non è nota, è stato applicato un **t test**. La statistica di test confronta la media campionaria dei tassi di mortalità con il valore di riferimento μ0=65.8
+
+Il test ha restituito una **media campionaria pari a 83.79 decessi per 100.000 abitanti**, con una statistica t=15.337 e un **p value inferiore a** 2.2×10\^-16.
+
+Poiché il p value risulta ampiamente inferiore al livello di significatività prefissato, **l’ipotesi nulla viene rifiutata**.
+
+Si conclude pertanto che, nel periodo considerato, la mortalità media per diabete risulta **statisticamente significativa e superiore** al target di sanità pubblica stabilito da Healthy People 2010. Tale conclusione è ulteriormente supportata dall’intervallo di confidenza unilaterale al 95%, il cui estremo inferiore è pari a **81.86**, valore nettamente superiore alla soglia di riferimento di 65.8.
 
 ```{r}
 library(dplyr)
 
-dataset_path <- "u_s_chronic_disease_indicators_cdi.csv"
-
-df <- read.csv(dataset_path, na.strings = c("", "NA", "NULL", "null"))
-
-df_filtered <- df %>%
-  filter(topic == "Diabetes")
-
-diab_gender <- df_filtered %>%
-  filter(
-    questionid == "DIA1_1",
-    datavaluetypeid == "CrdRate",
-    stratificationcategoryid1 == "GENDER",
-    !is.na(datavalue)
-  )
-
-maschi <- diab_gender %>%
-  filter(stratification1 == "Male") %>%
-  pull(datavalue) %>%
-  as.numeric()
-
-femmine <- diab_gender %>%
-  filter(stratification1 == "Female") %>%
-  pull(datavalue) %>%
-  as.numeric()
-
-cat("Maschi:", length(maschi), "osservazioni\n")
-cat("Femmine:", length(femmine), "osservazioni\n")
-
-t_test_result <- t.test(
-  maschi,
-  femmine,
-  alternative = "two.sided",
-  conf.level = 0.95
+# Caricamento dataset
+cdi <- read.csv(
+  "u_s_chronic_disease_indicators_cdi.csv",
+  stringsAsFactors = FALSE
 )
 
-print(t_test_result)
+# Filtro e conversione a numerico
+alcohol_liver_mortality <- cdi %>%
+  filter(
+    topic == "Alcohol",
+    questionid == "ALC6_0",
+    yearstart >= 2010 & yearend <= 2014,
+    stratificationcategory1 == "Overall",
+    datavaluetype == "Age-adjusted Rate"
+  ) %>%
+  mutate(datavalue = as.numeric(datavalue)) %>%
+  filter(!is.na(datavalue)) %>%
+  pull(datavalue)
+
+# Controllo rapido
+summary(alcohol_liver_mortality)
+
+# Parametri del test
+mu0 <- 3.2     # target Healthy People 2010
+alpha <- 0.05
+
+# Test di ipotesi monolaterale
+test_result <- t.test(
+  alcohol_liver_mortality,
+  mu = mu0,
+  alternative = "greater",
+  conf.level = 1 - alpha
+)
+
+test_result
 
 ```
 
-Il test t di Student evidenzia una differenza statisticamente significativa tra la media del tasso di prevalenza del diabete nella popolazione maschile e femminile.
+### Verifica delle ipotesi sulla mortalità per malattie del fegato correlate all’alcol
 
-La media osservata nei maschi ($\bar{x}_{M} \approx 89.98$) risulta superiore rispetto a quella osservata nelle femmine ($\bar{x}_{F} \approx 77.79$).
+L’obiettivo di sanità pubblica **Healthy People 2010** stabiliva come target la riduzione della mortalità per malattie croniche del fegato e cirrosi a **3.2 decessi per 100.000 abitanti**, misurata tramite tasso **age-adjusted**.
 
-Il valore del \emph{p-value} ($4.863 \times 10^{-12}$) è ampiamente inferiore al livello di significatività $\alpha = 0.05$; pertanto si rifiuta l’ipotesi nulla di uguaglianza delle medie.
+Sono stati analizzati i dati relativi alla mortalità per malattie del fegato associate al consumo di alcol (indicatore **ALC6_0**) nel periodo **2010–2014**, limitandosi ai valori complessivi e ai **Age-adjusted Rate**, al fine di garantire la confrontabilità tra le osservazioni considerate.
 
-L’intervallo di confidenza al 95% per la differenza tra le medie $[8.80,\; 15.57]$ non include lo zero, confermando la significatività statistica del risultato.
+È stato quindi costruito un **test di verifica delle ipotesi monolaterale** con livello di significatività α=0.05, formulando le seguenti ipotesi:
 
-I risultati indicano quindi una prevalenza media del diabete significativamente più elevata nella popolazione maschile rispetto a quella femminile.
+H0:μ≤3.2 H1:μ>3.2
+
+dove μ rappresenta la mortalità media per malattie del fegato osservata nel campione.
+
+Poiché la deviazione standard della popolazione non è nota, è stato applicato un **t test**. La statistica di test confronta la media campionaria dei tassi di mortalità con il valore di riferimento μ0=3.2
+
+Il test ha restituito una **media campionaria pari a 9.98 decessi per 100.000 abitanti**, con una statistica t=43.714 e un **p value inferiore a** 2.2×10\^−16. Poiché il p value risulta ampiamente inferiore al livello di significatività prefissato α=0.05, **l’ipotesi nulla viene rifiutata**.
+
+Si conclude pertanto che, nel periodo considerato, la mortalità media per malattie del fegato correlate al consumo di alcol risulta **statisticamente significativa e superiore** al target di sanità pubblica stabilito da Healthy People 2010. Tale conclusione è ulteriormente supportata dall’intervallo di confidenza unilaterale al 95%, il cui estremo inferiore è pari a **9.73**, valore nettamente superiore alla soglia di riferimento di **3.2 decessi per 100.000 abitanti**.
