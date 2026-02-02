@@ -747,7 +747,7 @@ Sono stati analizzati i dati relativi alla mortalità per diabete nel periodo **
 
 È stato quindi costruito un **test di verifica delle ipotesi monolaterale** con livello di significatività α=0.05, formulando le seguenti ipotesi:
 
-H0:μ≤65.8 H1:μ>65.8
+H0:μ≤65.8 H1:μ\>65.8
 
 dove μ rappresenta la mortalità media per diabete osservata nel campione.
 
@@ -808,7 +808,7 @@ Sono stati analizzati i dati relativi alla mortalità per malattie del fegato as
 
 È stato quindi costruito un **test di verifica delle ipotesi monolaterale** con livello di significatività α=0.05, formulando le seguenti ipotesi:
 
-H0:μ≤3.2 H1:μ>3.2
+H0:μ≤3.2 H1:μ\>3.2
 
 dove μ rappresenta la mortalità media per malattie del fegato osservata nel campione.
 
